@@ -1,0 +1,6 @@
+<Modules>
+  <Module PersistentId="9EC51720-92F7-4F98-84D1-718871664D88" ModuleId="WIFAuthentication" />
+  <Module PersistentId="45DBE94F-D85C-4061-AF16-588B12DC5BCC" ModuleId="WifAuthentication.Site" />
+  <Module PersistentId="6B350BA2-CFC7-4E94-8649-09A3B503E700" ModuleId="SecureTokenService" />
+  <Module PersistentId="E39571D8-BEF9-4F28-A96C-34D73D80AA83" ModuleId="Site" />
+</Modules>
