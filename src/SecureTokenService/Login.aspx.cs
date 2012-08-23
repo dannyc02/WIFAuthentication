@@ -33,7 +33,7 @@ public partial class Login : System.Web.UI.Page
         }
         else if ( !IsPostBack )
         {
-            txtUserName.Text = "Adam Carter";
+            txtUserName.Text = "Dan Curtis";
         }
     }    
 }
