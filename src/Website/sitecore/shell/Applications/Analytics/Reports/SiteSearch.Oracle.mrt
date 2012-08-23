@@ -1,0 +1,356 @@
+﻿<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<StiSerializer version="1.0" application="StiReport">
+  <Dictionary Ref="1" type="Dictionary" isKey="true">
+    <DataSources isList="true" count="1">
+      <DataSource Ref="3" type="Stimulsoft.Report.Dictionary.StiOracleSourceExt" isKey="true">
+        <Alias>DataSource</Alias>
+        <Columns isList="true" count="4">
+          <value>ItemLanguage,System.String</value>
+          <value>Total,System.Int32</value>
+          <value>Term,System.String</value>
+          <value>Hits,System.Int32</value>
+        </Columns>
+        <CommandTimeout>0</CommandTimeout>
+        <Dictionary isRef="1" />
+        <Name>DataSource</Name>
+        <NameInSource>DataConnection</NameInSource>
+        <Parameters isList="true" count="2">
+          <value>:StartDate,StartDate,4,0</value>
+          <value>:EndDate,EndDate,4,0</value>
+        </Parameters>
+        <SqlCommand>
+select 
+  TO_CHAR(Data."ItemLanguage") as "ItemLanguage",
+	Data."Term" as "Term",
+	Data."Hits" as "Hits",
+	Sum(Data."Total") as "Total" 
+from 
+	(select
+		"PageEvent"."DataKey" as "Term",
+		Max("PageEvent"."Integer") as "Hits",
+		Count(*) as "Total",
+    TO_CHAR("PageEvent"."ItemLanguage") as "ItemLanguage" 
+	from 
+		"PageEvent",
+		"Page",
+		"Session",
+		"GlobalSession",
+		"IPOwner",
+		"IP",
+		"Browser" 
+	where 
+		"Page"."Timestamp" &gt;= :StartDate and
+		"Page"."Timestamp" &lt;= :EndDate and
+		"Session"."GlobalSessionId" = "GlobalSession"."GlobalSessionId" and
+		"Session"."IpId" = "IP"."IpId" and
+		"IP"."IpOwnerId" = "IPOwner"."IpOwnerId" and
+		"Session"."BrowserId" = "Browser"."BrowserId" and
+		"Page"."SessionId" = "Session"."SessionId" and
+		("PageEvent"."PageEventDefinitionId" = '1396170C7320AB41992E027D03D523BF' or
+		"PageEvent"."PageEventDefinitionId" = 'EF2525635B98C544BD29353634C99C64') and
+		"PageEvent"."PageId" = "Page"."PageId"
+
+		{Session}
+		{GlobalSession}
+		{Browser}
+		{IpOwner}
+		{Ip}
+    
+	group by 
+		TO_CHAR("PageEvent"."ItemLanguage"),
+		"PageEvent"."DataKey"
+	) Data 
+where 
+	rownum &lt;= 100 
+group by 
+  TO_CHAR(Data."ItemLanguage"),
+	Data."Term",
+	Data."Hits" 
+order by 
+	"Total" desc,
+	"Hits" desc,
+	"Term"
+</SqlCommand>
+      </DataSource>
+    </DataSources>
+    <Relations isList="true" count="0" />
+    <Report isRef="0" />
+    <Variables isList="true" count="3">
+      <value>,StartDate,StartDate,System.DateTime,DateTime.Now.AddDays_x0028_-7_x0029_,False,True</value>
+      <value>,EndDate,EndDate,System.DateTime,DateTime.Now,False,True</value>
+      <value>,ReportTitle,ReportTitle,System.String,Site_x0020_Search,False,False</value>
+    </Variables>
+  </Dictionary>
+  <EngineVersion>EngineV1</EngineVersion>
+  <GlobalizationStrings isList="true" count="0" />
+  <Pages isList="true" count="1">
+    <Page1 Ref="4" type="Page" isKey="true">
+      <Border>None;Black;2;Solid;False;4;Black</Border>
+      <Brush>Transparent</Brush>
+      <Components isList="true" count="3">
+        <PageHeader Ref="5" type="PageHeaderBand" isKey="true">
+          <Border>Bottom;[23:54:95];1;Solid;False;4;Black</Border>
+          <Brush>Transparent</Brush>
+          <ClientRectangle>0,0.4,19,1</ClientRectangle>
+          <Components isList="true" count="2">
+            <Text2 Ref="6" type="Text" isKey="true">
+              <AutoWidth>True</AutoWidth>
+              <Border>Bottom;[23:54:95];1;Solid;False;4;Black</Border>
+              <Brush>Transparent</Brush>
+              <CanGrow>True</CanGrow>
+              <ClientRectangle>0,0,19,1</ClientRectangle>
+              <ComponentStyle>Title</ComponentStyle>
+              <Conditions isList="true" count="0" />
+              <Font>Cambria,26.25,Regular,Point,False,0</Font>
+              <Margins>0,0,0,0</Margins>
+              <Name>Text2</Name>
+              <Page isRef="4" />
+              <Parent isRef="5" />
+              <Text>{ReportTitle}</Text>
+              <TextBrush>[23:54:95]</TextBrush>
+              <Type>Expression</Type>
+              <VertAlignment>Center</VertAlignment>
+            </Text2>
+            <Text19 Ref="7" type="Text" isKey="true">
+              <Brush>EmptyBrush</Brush>
+              <ClientRectangle>8.6,0.6,10.4,0.4</ClientRectangle>
+              <Conditions isList="true" count="0" />
+              <Font>Calibri,10,Regular,Point,False,0</Font>
+              <Guid>b9e6658687a940ffad2a765e68cf6b7b</Guid>
+              <HorAlignment>Right</HorAlignment>
+              <Margins>0,0,0,0</Margins>
+              <Name>Text19</Name>
+              <Page isRef="4" />
+              <Parent isRef="5" />
+              <Text>{Format("{0:yyyy-MM-dd}", StartDate)} - {Format("{0:yyyy-MM-dd}", EndDate)}</Text>
+              <TextBrush>DimGray</TextBrush>
+              <Type>Expression</Type>
+              <VertAlignment>Center</VertAlignment>
+            </Text19>
+          </Components>
+          <ComponentStyle>Title</ComponentStyle>
+          <Conditions isList="true" count="0" />
+          <Name>PageHeader</Name>
+          <Page isRef="4" />
+          <Parent isRef="4" />
+        </PageHeader>
+        <Header1 Ref="8" type="HeaderBand" isKey="true">
+          <Brush>Transparent</Brush>
+          <ClientRectangle>0,2.2,19,0.8</ClientRectangle>
+          <Components isList="true" count="3">
+            <Text3 Ref="9" type="Text" isKey="true">
+              <Brush>EmptyBrush</Brush>
+              <ClientRectangle>0,0,2.2,0.6</ClientRectangle>
+              <Conditions isList="true" count="0" />
+              <Font>Calibri,11,Bold,Point,False,0</Font>
+              <Guid>0998aada50f94fd4938ce682fe6ddb53</Guid>
+              <HorAlignment>Right</HorAlignment>
+              <Margins>0,16,0,0</Margins>
+              <Name>Text3</Name>
+              <Page isRef="4" />
+              <Parent isRef="8" />
+              <Text>Count</Text>
+              <TextBrush>[54:95:145]</TextBrush>
+              <Type>Expression</Type>
+              <VertAlignment>Center</VertAlignment>
+            </Text3>
+            <Text4 Ref="10" type="Text" isKey="true">
+              <Brush>EmptyBrush</Brush>
+              <ClientRectangle>2.2,0,1.4,0.6</ClientRectangle>
+              <Conditions isList="true" count="0" />
+              <Font>Calibri,11,Bold,Point,False,0</Font>
+              <Guid>282edb2a509a46fa96bb1b705b503bea</Guid>
+              <HorAlignment>Right</HorAlignment>
+              <Margins>0,16,0,0</Margins>
+              <Name>Text4</Name>
+              <Page isRef="4" />
+              <Parent isRef="8" />
+              <Text>Hits</Text>
+              <TextBrush>[54:95:145]</TextBrush>
+              <Type>Expression</Type>
+              <VertAlignment>Center</VertAlignment>
+            </Text4>
+            <Text5 Ref="11" type="Text" isKey="true">
+              <Brush>EmptyBrush</Brush>
+              <ClientRectangle>3.6,0,15.4,0.6</ClientRectangle>
+              <Conditions isList="true" count="0" />
+              <Font>Calibri,11,Bold,Point,False,0</Font>
+              <Guid>9fba3964c10d42488b4b421627c6c8df</Guid>
+              <Margins>0,0,0,0</Margins>
+              <Name>Text5</Name>
+              <Page isRef="4" />
+              <Parent isRef="8" />
+              <Text>Search Text</Text>
+              <TextBrush>[54:95:145]</TextBrush>
+              <Type>Expression</Type>
+              <VertAlignment>Center</VertAlignment>
+            </Text5>
+          </Components>
+          <Conditions isList="true" count="0" />
+          <Name>Header1</Name>
+          <Page isRef="4" />
+          <Parent isRef="4" />
+        </Header1>
+        <Data1 Ref="12" type="DataBand" isKey="true">
+          <Brush>Transparent</Brush>
+          <ClientRectangle>0,3.8,19,0.6</ClientRectangle>
+          <Components isList="true" count="3">
+            <Text7 Ref="13" type="Text" isKey="true">
+              <Brush>EmptyBrush</Brush>
+              <ClientRectangle>0,0,2.2,0.6</ClientRectangle>
+              <Conditions isList="true" count="0" />
+              <Font>Calibri,11,Bold,Point,False,0</Font>
+              <HorAlignment>Right</HorAlignment>
+              <Margins>0,16,0,0</Margins>
+              <Name>Text7</Name>
+              <Page isRef="4" />
+              <Parent isRef="12" />
+              <Text>{DataSource.Total.ToString("#,##0")}</Text>
+              <TextBrush>[54:95:145]</TextBrush>
+              <Type>Expression</Type>
+              <VertAlignment>Center</VertAlignment>
+            </Text7>
+            <Text6 Ref="14" type="Text" isKey="true">
+              <Brush>EmptyBrush</Brush>
+              <ClientRectangle>3.6,0,15.4,0.6</ClientRectangle>
+              <Conditions isList="true" count="0" />
+              <Font>Calibri,11,Bold,Point,False,0</Font>
+              <Hyperlink>/sitecore/shell/applications/analytics/default.aspx?r={"{"}2DC20124-EEF1-4C7D-A72F-17051B082597{"}"}&amp;term={DataSource.Term}</Hyperlink>
+              <Margins>0,0,0,0</Margins>
+              <Name>Text6</Name>
+              <Page isRef="4" />
+              <Parent isRef="12" />
+              <Text>{DataSource.Term}</Text>
+              <TextBrush>[54:95:145]</TextBrush>
+              <Type>Expression</Type>
+              <VertAlignment>Center</VertAlignment>
+            </Text6>
+            <Text1 Ref="15" type="Text" isKey="true">
+              <Brush>EmptyBrush</Brush>
+              <ClientRectangle>2.2,0,1.4,0.6</ClientRectangle>
+              <Conditions isList="true" count="0" />
+              <Font>Calibri,11,Bold,Point,False,0</Font>
+              <Guid>a16aab46b9304a0e847038068189128e</Guid>
+              <HorAlignment>Right</HorAlignment>
+              <Margins>0,16,0,0</Margins>
+              <Name>Text1</Name>
+              <Page isRef="4" />
+              <Parent isRef="12" />
+              <Text>{DataSource.Hits.ToString("#,##0")}</Text>
+              <TextBrush>[54:95:145]</TextBrush>
+              <Type>Expression</Type>
+              <VertAlignment>Center</VertAlignment>
+            </Text1>
+          </Components>
+          <Conditions isList="true" count="0" />
+          <DataSourceName>DataSource</DataSourceName>
+          <EvenStyle>EvenRow</EvenStyle>
+          <Filters isList="true" count="0" />
+          <Name>Data1</Name>
+          <OddStyle>OddRow</OddStyle>
+          <Page isRef="4" />
+          <Parent isRef="4" />
+          <Sort isList="true" count="0" />
+        </Data1>
+      </Components>
+      <Conditions isList="true" count="0" />
+      <Guid>07f01f59d5f64faeab2194d128d0ac56</Guid>
+      <Margins>1,1,1,1</Margins>
+      <Name>Page1</Name>
+      <Page isRef="4" />
+      <PageHeight>29.7</PageHeight>
+      <PageWidth>21</PageWidth>
+      <Report isRef="0" />
+      <Watermark Ref="16" type="Stimulsoft.Report.Components.StiWatermark" isKey="true">
+        <Font>Arial,100</Font>
+        <TextBrush>[50:0:0:0]</TextBrush>
+      </Watermark>
+    </Page1>
+  </Pages>
+  <PrinterSettings Ref="17" type="Stimulsoft.Report.Print.StiPrinterSettings" isKey="true" />
+  <ReferencedAssemblies isList="true" count="10">
+    <value>System.Dll</value>
+    <value>System.Drawing.Dll</value>
+    <value>System.Windows.Forms.Dll</value>
+    <value>System.Data.Dll</value>
+    <value>System.Xml.Dll</value>
+    <value>Stimulsoft.Controls.Dll</value>
+    <value>Stimulsoft.Base.Dll</value>
+    <value>Stimulsoft.Report.Dll</value>
+    <value>Sitecore.Analytics.dll</value>
+    <value>Sitecore.Oracle.dll</value>
+  </ReferencedAssemblies>
+  <ReportAlias>SiteSearchReport</ReportAlias>
+  <ReportAuthor>Sitecore</ReportAuthor>
+  <ReportChanged>5/15/2009 10:06:57 AM</ReportChanged>
+  <ReportCreated>7/11/2008 10:00:10 AM</ReportCreated>
+  <ReportDescription>Site Search</ReportDescription>
+  <ReportGuid>80f38edec68e41fabca213d52612f5dc</ReportGuid>
+  <ReportName>SiteSearchReport</ReportName>
+  <ReportUnit>Centimeters</ReportUnit>
+  <ReportVersion>2009.1.400</ReportVersion>
+  <Script>using System;
+using System.Drawing;
+using System.Windows.Forms;
+using System.Data;
+using Stimulsoft.Controls;
+using Stimulsoft.Base.Drawing;
+using Stimulsoft.Report;
+using Stimulsoft.Report.Dialogs;
+using Stimulsoft.Report.Components;
+
+namespace Reports
+{
+    
+    public class SiteSearchReport : Stimulsoft.Report.StiReport
+    {
+        
+        public SiteSearchReport()
+        {
+            this.InitializeComponent();
+        }
+        #region StiReport Designer generated code - do not modify#endregion StiReport Designer generated code - do not modify
+    }
+}</Script>
+  <ScriptLanguage>CSharp</ScriptLanguage>
+  <Styles isList="true" count="6">
+    <Title Ref="18" type="Stimulsoft.Report.StiStyle" isKey="true">
+      <Border>Bottom;[23:54:95];1;Solid;False;4;Black</Border>
+      <Brush>Transparent</Brush>
+      <Font>Cambria,26.25,Regular,Point,False,0</Font>
+      <Name>Title</Name>
+      <TextBrush>[23:54:95]</TextBrush>
+    </Title>
+    <Subtitle Ref="19" type="Stimulsoft.Report.StiStyle" isKey="true">
+      <Brush>Transparent</Brush>
+      <Font>Cambria,12,Italic,Point,False,0</Font>
+      <Name>Subtitle</Name>
+      <TextBrush>[23:54:95]</TextBrush>
+    </Subtitle>
+    <ColumnHeader Ref="20" type="Stimulsoft.Report.StiStyle" isKey="true">
+      <Border>Top, Bottom;[54:95:145];1;Solid;False;4;Black</Border>
+      <Brush>Transparent</Brush>
+      <Font>Calibri,11,Bold,Point,False,0</Font>
+      <Name>ColumnHeader</Name>
+      <TextBrush>[54:95:145]</TextBrush>
+    </ColumnHeader>
+    <EvenRow Ref="21" type="Stimulsoft.Report.StiStyle" isKey="true">
+      <Brush>[211:223:238]</Brush>
+      <Font>Calibri,11,Bold,Point,False,0</Font>
+      <Name>EvenRow</Name>
+      <TextBrush>[54:95:145]</TextBrush>
+    </EvenRow>
+    <OddRow Ref="22" type="Stimulsoft.Report.StiStyle" isKey="true">
+      <Brush>Transparent</Brush>
+      <Font>Calibri,11,Bold,Point,False,0</Font>
+      <Name>OddRow</Name>
+      <TextBrush>[54:95:145]</TextBrush>
+    </OddRow>
+    <GroupHeader Ref="23" type="Stimulsoft.Report.StiStyle" isKey="true">
+      <Brush>Transparent</Brush>
+      <Font>Cambria,14.25,Bold,Point,False,0</Font>
+      <Name>GroupHeader</Name>
+      <TextBrush>[54:95:145]</TextBrush>
+    </GroupHeader>
+  </Styles>
+</StiSerializer>

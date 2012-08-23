@@ -1,0 +1,289 @@
+﻿<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<StiSerializer version="1.0" application="StiReport">
+  <Dictionary Ref="1" type="Dictionary" isKey="true">
+    <DataSources isList="true" count="1">
+      <TrafficSources Ref="3" type="Stimulsoft.Report.Dictionary.StiOracleSourceExt" isKey="true">
+        <Alias>TrafficSources</Alias>
+        <Columns isList="true" count="4">
+          <value>Url,System.String</value>
+          <value>Total,System.Int32</value>
+          <value>Keywords,System.String</value>
+        </Columns>
+        <CommandTimeout>0</CommandTimeout>
+        <Dictionary isRef="1" />
+        <Name>TrafficSources</Name>
+        <NameInSource>DataConnection</NameInSource>
+        <Parameters isList="true" count="3">
+          <value>:Id,,14,0</value>
+          <value>:StartDate,StartDate,4,0</value>
+          <value>:EndDate,EndDate,4,0</value>
+        </Parameters>
+        <SqlCommand>
+select 
+	TO_CHAR("ReferringSite"."URL") as "URL",
+	TO_CHAR("Keyword"."Keywords") as "Keywords",
+	Count(*) as "Total" 
+from 
+	"Session",
+	"ReferringSite",
+	"Keyword",
+
+  (select distinct "Session"."SessionId" 
+  from 
+    "Page",
+    "Session",
+    "GlobalSession" 
+  where 
+    "Page"."ItemId" = :Id and
+    "Page"."SessionId" = "Session"."SessionId" and
+    "Session"."GlobalSessionId" = "GlobalSession"."GlobalSessionId" and
+    "Session"."Timestamp" &gt;= :StartDate and
+    "Session"."Timestamp" &lt;= :EndDate
+    
+    {Session}
+    {GlobalSession}
+    
+  ) Data 
+where 
+	"Session"."SessionId" = Data."SessionId" and
+	"Session"."KeywordId" = "Keyword"."KeywordId" and
+	"Session"."ReferringSiteId" = "ReferringSite"."ReferringSiteId"
+	
+	{ReferringSite}
+  
+group by 
+	TO_CHAR("ReferringSite"."URL"),
+	TO_CHAR("Keyword"."Keywords") 
+order by 
+	TO_CHAR("ReferringSite"."URL")
+</SqlCommand>
+      </TrafficSources>
+    </DataSources>
+    <Relations isList="true" count="0" />
+    <Report isRef="0" />
+    <Variables isList="true" count="9">
+      <value>,Ip,Ip,System.String,,False,False</value>
+      <value>,IpOwner,IpOwner,System.String,,False,False</value>
+      <value>,Session,Session,System.String,,False,False</value>
+      <value>,Page,Page,System.String,,False,False</value>
+      <value>,PageEvent,PageEvent,System.String,,False,False</value>
+      <value>,PageEventDefinition,PageEventDefinition,System.String,,False,False</value>
+      <value>,StartDate,StartDate,System.DateTime,DateTime.Now.AddDays_x0028_-7_x0029_,False,True</value>
+      <value>,EndDate,EndDate,System.DateTime,DateTime.Now,False,True</value>
+      <value>,ReportTitle,ReportTitle,System.String,External_x0020_Traffic_x0020_Sources_x0020_Leading_x0020_to_x0020_This_x0020_Page,False,False</value>
+    </Variables>
+  </Dictionary>
+  <EngineVersion>EngineV1</EngineVersion>
+  <GlobalizationStrings isList="true" count="0" />
+  <Pages isList="true" count="1">
+    <Page1 Ref="4" type="Page" isKey="true">
+      <Border>None;Black;2;Solid;False;4;Black</Border>
+      <Brush>Transparent</Brush>
+      <Components isList="true" count="3">
+        <PageHeader Ref="5" type="PageHeaderBand" isKey="true">
+          <Border>Bottom;[23:54:95];1;Solid;False;4;Black</Border>
+          <Brush>Transparent</Brush>
+          <ClientRectangle>0,0.4,19,1</ClientRectangle>
+          <Components isList="true" count="1">
+            <Text2 Ref="6" type="Text" isKey="true">
+              <Border>Bottom;[23:54:95];1;Solid;False;4;Black</Border>
+              <Brush>Transparent</Brush>
+              <ClientRectangle>0,0,19,1</ClientRectangle>
+              <ComponentStyle>Title</ComponentStyle>
+              <Conditions isList="true" count="0" />
+              <Font>Cambria,26.25,Regular,Point,False,0</Font>
+              <Margins>0,0,0,0</Margins>
+              <Name>Text2</Name>
+              <Page isRef="4" />
+              <Parent isRef="5" />
+              <Text>{ReportTitle}</Text>
+              <TextBrush>[23:54:95]</TextBrush>
+              <Type>Expression</Type>
+              <VertAlignment>Center</VertAlignment>
+            </Text2>
+          </Components>
+          <ComponentStyle>Title</ComponentStyle>
+          <Conditions isList="true" count="0" />
+          <Name>PageHeader</Name>
+          <Page isRef="4" />
+          <Parent isRef="4" />
+        </PageHeader>
+        <GroupHeaderBand1 Ref="7" type="GroupHeaderBand" isKey="true">
+          <Brush>Transparent</Brush>
+          <ClientRectangle>0,2.2,19,0.8</ClientRectangle>
+          <Components isList="true" count="1">
+            <Text4 Ref="8" type="Text" isKey="true">
+              <Brush>Transparent</Brush>
+              <ClientRectangle>0,0.2,19,0.4</ClientRectangle>
+              <ComponentStyle>OddRow</ComponentStyle>
+              <Conditions isList="true" count="1">
+                <value>TrafficSources.Url,EqualTo,Previous_x0028_TrafficSources_x002C__x0020__x0022_Url_x0022__x0029_,,String,Red,Transparent,Arial_x002C_8,False,False,</value>
+              </Conditions>
+              <Font>Calibri,11,Bold,Point,False,0</Font>
+              <Margins>0,0,0,0</Margins>
+              <Name>Text4</Name>
+              <Page isRef="4" />
+              <Parent isRef="7" />
+              <Text>{TrafficSources.Total.ToString("#,##0")} visits from {string.IsNullOrEmpty(TrafficSources.Url) ? "(none)" : TrafficSources.Url}</Text>
+              <TextBrush>[54:95:145]</TextBrush>
+              <Type>Expression</Type>
+              <VertAlignment>Center</VertAlignment>
+            </Text4>
+          </Components>
+          <Condition>{TrafficSources.Url}</Condition>
+          <Conditions isList="true" count="0" />
+          <Name>GroupHeaderBand1</Name>
+          <Page isRef="4" />
+          <Parent isRef="4" />
+        </GroupHeaderBand1>
+        <Data1 Ref="9" type="DataBand" isKey="true">
+          <Brush>Transparent</Brush>
+          <ClientRectangle>0,3.8,19,0.4</ClientRectangle>
+          <Components isList="true" count="2">
+            <Text1 Ref="10" type="Text" isKey="true">
+              <Brush>EmptyBrush</Brush>
+              <ClientRectangle>1.6,0,17.4,0.4</ClientRectangle>
+              <Conditions isList="true" count="0" />
+              <Font>Calibri,10,Regular,Point,False,0</Font>
+              <Margins>0,0,0,0</Margins>
+              <Name>Text1</Name>
+              <Page isRef="4" />
+              <Parent isRef="9" />
+              <Text>{string.IsNullOrEmpty(TrafficSources.Keywords) ? "(no keywords)" : "\"" + TrafficSources.Keywords + "\""}</Text>
+              <TextBrush>DimGray</TextBrush>
+              <Type>Expression</Type>
+              <VertAlignment>Center</VertAlignment>
+            </Text1>
+            <Text3 Ref="11" type="Text" isKey="true">
+              <Brush>EmptyBrush</Brush>
+              <ClientRectangle>0,0,1.6,0.4</ClientRectangle>
+              <Conditions isList="true" count="0" />
+              <Font>Calibri,10,Regular,Point,False,0</Font>
+              <HorAlignment>Right</HorAlignment>
+              <Margins>0,16,0,0</Margins>
+              <Name>Text3</Name>
+              <Page isRef="4" />
+              <Parent isRef="9" />
+              <Text>{TrafficSources.Total.ToString("#,##0")}</Text>
+              <TextBrush>DimGray</TextBrush>
+              <Type>Expression</Type>
+              <VertAlignment>Center</VertAlignment>
+            </Text3>
+          </Components>
+          <Conditions isList="true" count="0" />
+          <DataRelationName isNull="true" />
+          <DataSourceName>TrafficSources</DataSourceName>
+          <Filters isList="true" count="0" />
+          <Name>Data1</Name>
+          <Page isRef="4" />
+          <Parent isRef="4" />
+          <Sort isList="true" count="0" />
+        </Data1>
+      </Components>
+      <Conditions isList="true" count="0" />
+      <Guid>07f01f59d5f64faeab2194d128d0ac56</Guid>
+      <Margins>1,1,1,1</Margins>
+      <Name>Page1</Name>
+      <Page isRef="4" />
+      <PageHeight>29.7</PageHeight>
+      <PageWidth>21</PageWidth>
+      <Report isRef="0" />
+      <Watermark Ref="12" type="Stimulsoft.Report.Components.StiWatermark" isKey="true">
+        <Font>Arial,100</Font>
+        <TextBrush>[50:0:0:0]</TextBrush>
+      </Watermark>
+    </Page1>
+  </Pages>
+  <PrinterSettings Ref="13" type="Stimulsoft.Report.Print.StiPrinterSettings" isKey="true" />
+  <ReferencedAssemblies isList="true" count="10">
+    <value>System.Dll</value>
+    <value>System.Drawing.Dll</value>
+    <value>System.Windows.Forms.Dll</value>
+    <value>System.Data.Dll</value>
+    <value>System.Xml.Dll</value>
+    <value>Stimulsoft.Controls.Dll</value>
+    <value>Stimulsoft.Base.Dll</value>
+    <value>Stimulsoft.Report.Dll</value>
+    <value>Sitecore.Analytics.dll</value>
+    <value>Sitecore.Oracle.dll</value>
+  </ReferencedAssemblies>
+  <ReportAlias>ExternalTrafficSourcesLeadingToThisPageReport</ReportAlias>
+  <ReportAuthor>Sitecore</ReportAuthor>
+  <ReportChanged>5/15/2009 10:08:01 AM</ReportChanged>
+  <ReportCreated>7/11/2008 10:00:10 AM</ReportCreated>
+  <ReportDescription>External Traffic Sources Leading To This Page</ReportDescription>
+  <ReportGuid>c5b8ac6a6e304dfcadbd717af59dc1f4</ReportGuid>
+  <ReportName>ExternalTrafficSourcesLeadingToThisPageReport</ReportName>
+  <ReportUnit>Centimeters</ReportUnit>
+  <ReportVersion>2009.1.400</ReportVersion>
+  <Script>using System;
+using System.Drawing;
+using System.Windows.Forms;
+using System.Data;
+using Stimulsoft.Controls;
+using Stimulsoft.Base.Drawing;
+using Stimulsoft.Report;
+using Stimulsoft.Report.Dialogs;
+using Stimulsoft.Report.Components;
+
+namespace Reports
+{
+    
+    public class ExternalTrafficSourcesLeadingToThisPageReport : Stimulsoft.Report.StiReport
+    {
+        
+        public ExternalTrafficSourcesLeadingToThisPageReport()
+        {
+            this.InitializeComponent();
+        }
+        #region StiReport Designer generated code - do not modify#endregion StiReport Designer generated code - do not modify
+    }
+}</Script>
+  <ScriptLanguage>CSharp</ScriptLanguage>
+  <Styles isList="true" count="7">
+    <Title Ref="14" type="Stimulsoft.Report.StiStyle" isKey="true">
+      <Border>Bottom;[23:54:95];1;Solid;False;4;Black</Border>
+      <Brush>Transparent</Brush>
+      <Font>Cambria,26.25,Regular,Point,False,0</Font>
+      <Name>Title</Name>
+      <TextBrush>[23:54:95]</TextBrush>
+    </Title>
+    <Subtitle Ref="15" type="Stimulsoft.Report.StiStyle" isKey="true">
+      <Brush>Transparent</Brush>
+      <Font>Cambria,12,Italic,Point,False,0</Font>
+      <Name>Subtitle</Name>
+      <TextBrush>[23:54:95]</TextBrush>
+    </Subtitle>
+    <ColumnHeader Ref="16" type="Stimulsoft.Report.StiStyle" isKey="true">
+      <Border>Top, Bottom;[54:95:145];1;Solid;False;4;Black</Border>
+      <Brush>Transparent</Brush>
+      <Font>Calibri,11,Bold,Point,False,0</Font>
+      <Name>ColumnHeader</Name>
+      <TextBrush>[54:95:145]</TextBrush>
+    </ColumnHeader>
+    <EvenRow Ref="17" type="Stimulsoft.Report.StiStyle" isKey="true">
+      <Brush>[211:223:238]</Brush>
+      <Font>Calibri,11,Bold,Point,False,0</Font>
+      <Name>EvenRow</Name>
+      <TextBrush>[54:95:145]</TextBrush>
+    </EvenRow>
+    <OddRow Ref="18" type="Stimulsoft.Report.StiStyle" isKey="true">
+      <Brush>Transparent</Brush>
+      <Font>Calibri,11,Bold,Point,False,0</Font>
+      <Name>OddRow</Name>
+      <TextBrush>[54:95:145]</TextBrush>
+    </OddRow>
+    <GroupHeader Ref="19" type="Stimulsoft.Report.StiStyle" isKey="true">
+      <Brush>Transparent</Brush>
+      <Font>Cambria,14.25,Bold,Point,False,0</Font>
+      <Name>GroupHeader</Name>
+      <TextBrush>[54:95:145]</TextBrush>
+    </GroupHeader>
+    <Detail Ref="20" type="Stimulsoft.Report.StiStyle" isKey="true">
+      <Brush>EmptyBrush</Brush>
+      <Font>Calibri,10,Regular,Point,False,0</Font>
+      <Name>Detail</Name>
+      <TextBrush>DimGray</TextBrush>
+    </Detail>
+  </Styles>
+</StiSerializer>

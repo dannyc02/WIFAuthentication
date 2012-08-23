@@ -1,3 +1,4 @@
 <Modules>
   <Module PersistentId="087314B1-514E-4C6B-9A0B-4E24D65390FD" ModuleId="Website" />
+  <Module PersistentId="9B19DE0C-C22E-4C0B-92C8-EE169B01C990" ModuleId="SecureTokenService" />
 </Modules>

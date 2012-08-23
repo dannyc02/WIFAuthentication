@@ -1,0 +1,16 @@
+﻿#FileList a {  
+  display: inline;
+  float: none;
+}
+
+.scMediaValidation {
+  margin-left: 0;
+}
+
+.scMediaBorder {
+  margin-right: 2px;
+}
+
+#FileList a.scOption {
+  width: 80px;
+}

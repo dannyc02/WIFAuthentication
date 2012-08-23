@@ -1,0 +1,13 @@
+Installing package: C:\Projects\WIFAuthentication\src\Website\sitecore\admin\packages\FedAuthenticator.web.update
+Installing file '_DEV\DeployedItems.xml'
+Preparing to install file 'App_Config\Include\FedAuthenticator.config'
+Installing file 'bin\FedAuthenticator.dll'
+Installing file 'bin\FedAuthenticator.pdb'
+Installing file 'bin\HedgehogDevelopment.SitecoreProject.PackageInstallPostProcessor.dll'
+Installing file 'sitecore modules\shell\FedAuthenticator\sso.aspx'
+Copying files to be installed to solution and backing up overwritten files
+Executing Post Installation instuctions: 'HedgehogDevelopment.SitecoreProject.PackageInstallPostProcessor.DoPostDeployActions,HedgehogDevelopment.SitecoreProject.PackageInstallPostProcessor.dll'
+23/08/2012-15:03: Starting PostDeployActions
+23/08/2012-15:03: Recursive deploy action is set to ignore
+23/08/2012-15:03: TDS PostDeployActions complete.
+Installation has been completed

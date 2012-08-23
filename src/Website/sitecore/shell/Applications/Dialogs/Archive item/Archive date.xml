@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8" ?> 
+<control xmlns:def="Definition" xmlns="http://schemas.sitecore.net/Visual-Studio-Intellisense">
+  <ArchiveDate>
+    <WizardForm CodeBeside="Sitecore.Shell.Applications.Dialogs.ArchiveDate.ArchiveDateForm,Sitecore.Client">
+
+      <WizardFormFirstPage ID="FirstPage" Icon="Network/32x32/Server_Time.png">
+        <Border Class="scWizardWelcomeTitle"><Literal ID="Welcome" Text="Welcome to the Archive Item Wizard."/></Border>
+        <Literal Text="This wizard helps you:"/>
+        <ul>
+          <li class="scWizardBullet"><Literal Text="Select the date and time when the current item will be archived."/></li>
+        </ul>
+      </WizardFormFirstPage>
+      
+      <WizardFormPage ID="ArchiveDate" Header="Archive Date and Time." Text="Select the date and time when the current item should be archived. Click Set to continue." Icon="Network/32x32/Server_Time.png">
+        <WizardFormIndent>
+          <GridPanel Columns="2" CellPadding="4" Width="100%">
+
+            <Border GridPanel.NoWrap="true">
+              <Literal Text="Date and Time:"/>
+            </Border>
+            <DateTimePicker ID="Date" GridPanel.Width="100%" Width="100%"/>
+            
+          </GridPanel>
+        
+        </WizardFormIndent>
+      </WizardFormPage>
+    
+      <WizardFormLastPage ID="LastPage" Icon="Network/32x32/Server_Time.png">
+        <Border><Literal Text="The date and time when current item  will be archived have been set successfully. Click Finish to close the wizard."/></Border>
+      </WizardFormLastPage>
+
+    </WizardForm>
+  </ArchiveDate>
+</control>

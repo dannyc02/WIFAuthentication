@@ -1,0 +1,265 @@
+﻿<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<StiSerializer version="1.0" application="StiReport">
+  <Dictionary Ref="1" type="Dictionary" isKey="true">
+    <DataSources isList="true" count="1">
+      <Robots Ref="3" type="Stimulsoft.Report.Dictionary.StiSqlSource" isKey="true">
+        <Alias>Robots</Alias>
+        <Columns isList="true" count="2">
+          <value>Timestamp,System.DateTime</value>
+          <value>UserAgent,System.String</value>
+        </Columns>
+        <CommandTimeout>0</CommandTimeout>
+        <Dictionary isRef="1" />
+        <Name>Robots</Name>
+        <NameInSource>DataConnection</NameInSource>
+        <Parameters isList="true" count="3">
+          <value>_x0040_Id,,14,0</value>
+          <value>_x0040_StartDate,StartDate,4,0</value>
+          <value>_x0040_EndDate,EndDate,4,0</value>
+        </Parameters>
+        <SqlCommand>
+select distinct top 50 
+	Browser.UserAgent,
+	(
+		select 
+      max(Page.Timestamp) 
+		from 
+			Page,
+			Session 
+		where 
+			Page.ItemId = @Id and
+			Page.SessionId = Session.SessionId and
+			Session.BrowserId = Data.BrowserId
+	) as Timestamp 
+from 
+	(select top 10000
+		Browser.BrowserId 
+	from 
+		Page,
+		Session,
+		GlobalSession,
+		Browser 
+	where 
+		Page.ItemId = @Id and
+		Session.Timestamp &gt;= @StartDate and
+		Session.Timestamp &lt;= @EndDate and
+	
+		Page.SessionId = Session.SessionId and
+		Session.BrowserId = Browser.BrowserId and 
+		GlobalSession.GlobalSessionId = Session.GlobalSessionId and
+		GlobalSession.VisitorIdentification &gt;= 900 and
+		GlobalSession.VisitorIdentification &lt;= 910 
+	order by 
+		Page.Timestamp desc 
+	) as Data,
+	Browser 
+where 
+	Browser.BrowserId = Data.BrowserId 
+order by 
+	Timestamp desc
+</SqlCommand>
+      </Robots>
+    </DataSources>
+    <Relations isList="true" count="0" />
+    <Report isRef="0" />
+    <Variables isList="true" count="9">
+      <value>,Ip,Ip,System.String,,False,False</value>
+      <value>,IpOwner,IpOwner,System.String,,False,False</value>
+      <value>,Session,Session,System.String,,False,False</value>
+      <value>,Page,Page,System.String,,False,False</value>
+      <value>,PageEvent,PageEvent,System.String,,False,False</value>
+      <value>,PageEventDefinition,PageEventDefinition,System.String,,False,False</value>
+      <value>,StartDate,StartDate,System.DateTime,DateTime.Now.AddDays_x0028_-7_x0029_,False,True</value>
+      <value>,EndDate,EndDate,System.DateTime,DateTime.Now,False,True</value>
+      <value>,ReportTitle,ReportTitle,System.String,Robots,False,False</value>
+    </Variables>
+  </Dictionary>
+  <EngineVersion>EngineV1</EngineVersion>
+  <GlobalizationStrings isList="true" count="0" />
+  <Pages isList="true" count="1">
+    <Page1 Ref="4" type="Page" isKey="true">
+      <Border>None;Black;2;Solid;False;4;Black</Border>
+      <Brush>Transparent</Brush>
+      <Components isList="true" count="2">
+        <PageHeader Ref="5" type="PageHeaderBand" isKey="true">
+          <Border>Bottom;[23:54:95];1;Solid;False;4;Black</Border>
+          <Brush>Transparent</Brush>
+          <ClientRectangle>0,0.4,19,1</ClientRectangle>
+          <Components isList="true" count="1">
+            <Text2 Ref="6" type="Text" isKey="true">
+              <Border>Bottom;[23:54:95];1;Solid;False;4;Black</Border>
+              <Brush>Transparent</Brush>
+              <ClientRectangle>0,0,19,1</ClientRectangle>
+              <ComponentStyle>Title</ComponentStyle>
+              <Conditions isList="true" count="0" />
+              <Font>Cambria,26.25,Regular,Point,False,0</Font>
+              <Margins>0,0,0,0</Margins>
+              <Name>Text2</Name>
+              <Page isRef="4" />
+              <Parent isRef="5" />
+              <Text>{ReportTitle}</Text>
+              <TextBrush>[23:54:95]</TextBrush>
+              <Type>Expression</Type>
+              <VertAlignment>Center</VertAlignment>
+            </Text2>
+          </Components>
+          <ComponentStyle>Title</ComponentStyle>
+          <Conditions isList="true" count="0" />
+          <Name>PageHeader</Name>
+          <Page isRef="4" />
+          <Parent isRef="4" />
+        </PageHeader>
+        <Data1 Ref="7" type="DataBand" isKey="true">
+          <Brush>Transparent</Brush>
+          <ClientRectangle>0,2.2,19,0.8</ClientRectangle>
+          <Components isList="true" count="2">
+            <Text1 Ref="8" type="Text" isKey="true">
+              <Brush>Transparent</Brush>
+              <ClientRectangle>0,0,4.4,0.6</ClientRectangle>
+              <ComponentStyle>OddRow</ComponentStyle>
+              <Conditions isList="true" count="0" />
+              <Font>Calibri,11,Bold,Point,False,0</Font>
+              <Margins>0,16,0,0</Margins>
+              <Name>Text1</Name>
+              <Page isRef="4" />
+              <Parent isRef="7" />
+              <Text>{Robots.Timestamp.ToString("yyyy-MM-dd HH:mm:ss")}</Text>
+              <TextBrush>[54:95:145]</TextBrush>
+              <Type>Expression</Type>
+              <VertAlignment>Center</VertAlignment>
+            </Text1>
+            <Text3 Ref="9" type="Text" isKey="true">
+              <Brush>Transparent</Brush>
+              <ClientRectangle>4.4,0,14.6,0.6</ClientRectangle>
+              <ComponentStyle>OddRow</ComponentStyle>
+              <Conditions isList="true" count="0" />
+              <Font>Calibri,11,Bold,Point,False,0</Font>
+              <Guid>2552688a5c894f4784236e52198d584d</Guid>
+              <Margins>0,16,0,0</Margins>
+              <Name>Text3</Name>
+              <Page isRef="4" />
+              <Parent isRef="7" />
+              <Text>{Robots.UserAgent}</Text>
+              <TextBrush>[54:95:145]</TextBrush>
+              <Type>Expression</Type>
+              <VertAlignment>Center</VertAlignment>
+            </Text3>
+          </Components>
+          <Conditions isList="true" count="0" />
+          <DataRelationName isNull="true" />
+          <DataSourceName>Robots</DataSourceName>
+          <EvenStyle>EvenRow</EvenStyle>
+          <Filters isList="true" count="0" />
+          <Name>Data1</Name>
+          <OddStyle>OddRow</OddStyle>
+          <Page isRef="4" />
+          <Parent isRef="4" />
+          <Sort isList="true" count="0" />
+        </Data1>
+      </Components>
+      <Conditions isList="true" count="0" />
+      <Guid>07f01f59d5f64faeab2194d128d0ac56</Guid>
+      <Margins>1,1,1,1</Margins>
+      <Name>Page1</Name>
+      <Page isRef="4" />
+      <PageHeight>29.7</PageHeight>
+      <PageWidth>21</PageWidth>
+      <Report isRef="0" />
+      <Watermark Ref="10" type="Stimulsoft.Report.Components.StiWatermark" isKey="true">
+        <Font>Arial,100</Font>
+        <TextBrush>[50:0:0:0]</TextBrush>
+      </Watermark>
+    </Page1>
+  </Pages>
+  <PrinterSettings Ref="11" type="Stimulsoft.Report.Print.StiPrinterSettings" isKey="true" />
+  <ReferencedAssemblies isList="true" count="9">
+    <value>System.Dll</value>
+    <value>System.Drawing.Dll</value>
+    <value>System.Windows.Forms.Dll</value>
+    <value>System.Data.Dll</value>
+    <value>System.Xml.Dll</value>
+    <value>Stimulsoft.Controls.Dll</value>
+    <value>Stimulsoft.Base.Dll</value>
+    <value>Stimulsoft.Report.Dll</value>
+    <value>Sitecore.Analytics.dll</value>
+  </ReferencedAssemblies>
+  <ReportAlias>RobotsReport</ReportAlias>
+  <ReportAuthor>Sitecore</ReportAuthor>
+  <ReportChanged>5/15/2009 10:08:49 AM</ReportChanged>
+  <ReportCreated>7/11/2008 10:00:10 AM</ReportCreated>
+  <ReportDescription>Robots</ReportDescription>
+  <ReportGuid>dc339013470040c7a259ac678f3170c4</ReportGuid>
+  <ReportName>RobotsReport</ReportName>
+  <ReportUnit>Centimeters</ReportUnit>
+  <ReportVersion>2009.1.400</ReportVersion>
+  <Script>using System;
+using System.Drawing;
+using System.Windows.Forms;
+using System.Data;
+using Stimulsoft.Controls;
+using Stimulsoft.Base.Drawing;
+using Stimulsoft.Report;
+using Stimulsoft.Report.Dialogs;
+using Stimulsoft.Report.Components;
+
+namespace Reports
+{
+    
+    public class RobotsReport : Stimulsoft.Report.StiReport
+    {
+        
+        public RobotsReport()
+        {
+            this.InitializeComponent();
+        }
+        #region StiReport Designer generated code - do not modify#endregion StiReport Designer generated code - do not modify
+    }
+}</Script>
+  <ScriptLanguage>CSharp</ScriptLanguage>
+  <Styles isList="true" count="7">
+    <Title Ref="12" type="Stimulsoft.Report.StiStyle" isKey="true">
+      <Border>Bottom;[23:54:95];1;Solid;False;4;Black</Border>
+      <Brush>Transparent</Brush>
+      <Font>Cambria,26.25,Regular,Point,False,0</Font>
+      <Name>Title</Name>
+      <TextBrush>[23:54:95]</TextBrush>
+    </Title>
+    <Subtitle Ref="13" type="Stimulsoft.Report.StiStyle" isKey="true">
+      <Brush>Transparent</Brush>
+      <Font>Cambria,12,Italic,Point,False,0</Font>
+      <Name>Subtitle</Name>
+      <TextBrush>[23:54:95]</TextBrush>
+    </Subtitle>
+    <ColumnHeader Ref="14" type="Stimulsoft.Report.StiStyle" isKey="true">
+      <Border>Top, Bottom;[54:95:145];1;Solid;False;4;Black</Border>
+      <Brush>Transparent</Brush>
+      <Font>Calibri,11,Bold,Point,False,0</Font>
+      <Name>ColumnHeader</Name>
+      <TextBrush>[54:95:145]</TextBrush>
+    </ColumnHeader>
+    <EvenRow Ref="15" type="Stimulsoft.Report.StiStyle" isKey="true">
+      <Brush>[211:223:238]</Brush>
+      <Font>Calibri,11,Bold,Point,False,0</Font>
+      <Name>EvenRow</Name>
+      <TextBrush>[54:95:145]</TextBrush>
+    </EvenRow>
+    <OddRow Ref="16" type="Stimulsoft.Report.StiStyle" isKey="true">
+      <Brush>Transparent</Brush>
+      <Font>Calibri,11,Bold,Point,False,0</Font>
+      <Name>OddRow</Name>
+      <TextBrush>[54:95:145]</TextBrush>
+    </OddRow>
+    <GroupHeader Ref="17" type="Stimulsoft.Report.StiStyle" isKey="true">
+      <Brush>Transparent</Brush>
+      <Font>Cambria,14.25,Bold,Point,False,0</Font>
+      <Name>GroupHeader</Name>
+      <TextBrush>[54:95:145]</TextBrush>
+    </GroupHeader>
+    <Detail Ref="18" type="Stimulsoft.Report.StiStyle" isKey="true">
+      <Brush>EmptyBrush</Brush>
+      <Font>Calibri,10,Regular,Point,False,0</Font>
+      <Name>Detail</Name>
+      <TextBrush>DimGray</TextBrush>
+    </Detail>
+  </Styles>
+</StiSerializer>

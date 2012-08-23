@@ -1,0 +1,431 @@
+﻿<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<StiSerializer version="1.0" application="StiReport">
+  <Dictionary Ref="1" type="Dictionary" isKey="true">
+    <DataSources isList="true" count="1">
+      <Feedback Ref="3" type="#SQLSERVER Stimulsoft.Report.Dictionary.StiSqlSource #SQLSERVER #ORACLE Stimulsoft.Report.Dictionary.StiOracleSourceExt #ORACLE" isKey="true">
+        <Alias>Feedback</Alias>
+        <Columns isList="true" count="7">
+          <value>PageId,System.Guid</value>
+          <value>Timestamp,System.DateTime</value>
+          <value>SessionId,System.Guid</value>
+          <value>BusinessName,System.String</value>
+          <value>PageEventName,System.String</value>
+          <value>Icon,System.String</value>
+          <value>Data,System.String</value>
+        </Columns>
+        <CommandTimeout>30</CommandTimeout>
+        <Dictionary isRef="1" />
+        <Name>Feedback</Name>
+        <NameInSource>SitecoreAnalytics</NameInSource>
+        <Parameters isList="true" count="3">
+          <value>
+            #SQLSERVER_x0040_ItemId,,14,0#SQLSERVER
+            #ORACLE:ItemId,,14,0#ORACLE
+          </value>
+        </Parameters>
+        <SqlCommand>
+#SQLSERVER
+SELECT Top 100 
+	Page.PageId, 
+	Page.Timestamp, 
+	Session.SessionId, 
+	IPOwner.Name as BusinessName, 
+	PageEventDefinition.Name as PageEventName, 
+	PageEventDefinition.Icon, 
+	PageEvent.Data
+FROM 
+	Session, 
+	Page, 
+	PageEvent, 
+	PageEventDefinition, 
+	IPOwner
+WHERE 
+	Session.SessionId = Page.SessionId AND 
+	Page.PageId = PageEvent.PageId AND 
+	PageEventDefinition.PageEventDefinitionId = PageEvent.PageEventDefinitionId AND 
+    IPOwner.IpId = Session.IpId AND 
+    PageEvent.ItemId = @ItemId AND 
+	PageEventDefinition.IsAuthorFeedback = 1
+ORDER BY PageEventDefinition.Name, Page.Timestamp DESC
+#SQLSERVER
+
+#ORACLE
+SELECT
+	"Page"."PageId", 
+	"Page"."Timestamp", 
+	"Session"."SessionId", 
+	"IPOwner"."Name" as "BusinessName", 
+	TO_CHAR("PageEventDefinition"."Name") as "PageEventName", 
+	"PageEventDefinition"."Icon", 
+	"PageEvent"."Data"
+FROM 
+	"Session", 
+	"Page", 
+	"PageEvent", 
+	"PageEventDefinition", 
+	"IPOwner"
+WHERE 
+	rownum &lt;= 100 and
+	"Session"."SessionId" = "Page"."SessionId" AND 
+	"Page"."PageId" = "PageEvent"."PageId" AND 
+	"PageEventDefinition"."PageEventDefinitionId" = "PageEvent"."PageEventDefinitionId" AND 
+  "IPOwner"."IpId" = "Session"."IpId" AND 
+  "PageEvent"."ItemId" = :ItemId AND 
+	"PageEventDefinition"."IsAuthorFeedback" = 1
+ORDER BY 
+	TO_CHAR("PageEventDefinition"."Name"), "Page"."Timestamp" DESC
+#ORACLE
+</SqlCommand>
+      </Feedback>
+    </DataSources>
+    <Relations isList="true" count="0" />
+    <Report isRef="0" />
+    <Variables isList="true" count="0" />
+  </Dictionary>
+  <GlobalizationStrings isList="true" count="0" />
+  <Pages isList="true" count="1">
+    <Page1 Ref="4" type="Page" isKey="true">
+      <Border>None;Black;2;Solid;False;4;Black</Border>
+      <Brush>Transparent</Brush>
+      <Components isList="true" count="4">
+        <PageHeader Ref="5" type="PageHeaderBand" isKey="true">
+          <Border>Bottom;[23:54:95];1;Solid;False;4;Black</Border>
+          <Brush>Transparent</Brush>
+          <ClientRectangle>0,0.4,19,2.4</ClientRectangle>
+          <Components isList="true" count="2">
+            <Text2 Ref="6" type="Text" isKey="true">
+              <AutoWidth>True</AutoWidth>
+              <Border>Bottom;[23:54:95];1;Solid;False;4;Black</Border>
+              <Brush>Transparent</Brush>
+              <CanGrow>True</CanGrow>
+              <ClientRectangle>0,0,19,0.8</ClientRectangle>
+              <Conditions isList="true" count="0" />
+              <Font>Cambria,26.25,Regular,Point,False,0</Font>
+              <LinesOfUnderline>None</LinesOfUnderline>
+              <Margins>0,0,0,0</Margins>
+              <MaxSize>0,0</MaxSize>
+              <MinSize>0,0</MinSize>
+              <Name>Text2</Name>
+              <OnlyText>True</OnlyText>
+              <Page isRef="4" />
+              <Parent isRef="5" />
+              <Text>Authoring Feedback</Text>
+              <TextBrush>[23:54:95]</TextBrush>
+              <TextFormat Ref="7" type="GeneralFormat" isKey="true" />
+              <Type>Expression</Type>
+              <VertAlignment>Center</VertAlignment>
+            </Text2>
+            <Text5 Ref="8" type="Text" isKey="true">
+              <AutoWidth>True</AutoWidth>
+              <Brush>Transparent</Brush>
+              <CanGrow>True</CanGrow>
+              <ClientRectangle>0,1,19,0.4</ClientRectangle>
+              <ComponentStyle>Subtitle</ComponentStyle>
+              <Conditions isList="true" count="0" />
+              <Font>Cambria,12,Italic,Point,False,0</Font>
+              <Guid>35b9fc701eec48799ea4291a9108eb94</Guid>
+              <LinesOfUnderline>None</LinesOfUnderline>
+              <Margins>0,0,0,0</Margins>
+              <MaxSize>0,0</MaxSize>
+              <MinSize>0,0</MinSize>
+              <Name>Text5</Name>
+              <OnlyText>True</OnlyText>
+              <Page isRef="4" />
+              <Parent isRef="5" />
+              <Text>Information that can be used to improve the current page</Text>
+              <TextBrush>[23:54:95]</TextBrush>
+              <TextFormat Ref="9" type="GeneralFormat" isKey="true" />
+              <Type>Expression</Type>
+              <VertAlignment>Center</VertAlignment>
+            </Text5>
+          </Components>
+          <ComponentStyle>Title</ComponentStyle>
+          <Conditions isList="true" count="0" />
+          <MaxHeight>0</MaxHeight>
+          <MinHeight>0</MinHeight>
+          <Name>PageHeader</Name>
+          <Page isRef="4" />
+          <Parent isRef="4" />
+        </PageHeader>
+        <PageHeader2 Ref="10" type="PageHeaderBand" isKey="true">
+          <Border>Top, Bottom;[54:95:145];1;Solid;False;4;Black</Border>
+          <Brush>Transparent</Brush>
+          <ClientRectangle>0,3.6,19,0.6</ClientRectangle>
+          <Components isList="true" count="3">
+            <Text1 Ref="11" type="Text" isKey="true">
+              <Border>Top, Bottom;[54:95:145];1;Solid;False;4;Black</Border>
+              <Brush>Transparent</Brush>
+              <ClientRectangle>0,0,7,0.6</ClientRectangle>
+              <ComponentStyle>ColumnHeader</ComponentStyle>
+              <Conditions isList="true" count="0" />
+              <Font>Calibri,11,Bold,Point,False,0</Font>
+              <LinesOfUnderline>None</LinesOfUnderline>
+              <Margins>0,0,0,0</Margins>
+              <MaxSize>0,0</MaxSize>
+              <MinSize>0,0</MinSize>
+              <Name>Text1</Name>
+              <OnlyText>True</OnlyText>
+              <Page isRef="4" />
+              <Parent isRef="10" />
+              <Text>Information</Text>
+              <TextBrush>[54:95:145]</TextBrush>
+              <TextFormat Ref="12" type="GeneralFormat" isKey="true" />
+              <Type>Expression</Type>
+              <VertAlignment>Center</VertAlignment>
+            </Text1>
+            <Text3 Ref="13" type="Text" isKey="true">
+              <Border>Top, Bottom;[54:95:145];1;Solid;False;4;Black</Border>
+              <Brush>Transparent</Brush>
+              <ClientRectangle>7,0,6.8,0.6</ClientRectangle>
+              <ComponentStyle>ColumnHeader</ComponentStyle>
+              <Conditions isList="true" count="0" />
+              <Font>Calibri,11,Bold,Point,False,0</Font>
+              <Guid>51f099c6ee9044229d086e60a9e16c96</Guid>
+              <LinesOfUnderline>None</LinesOfUnderline>
+              <Margins>0,0,0,0</Margins>
+              <MaxSize>0,0</MaxSize>
+              <MinSize>0,0</MinSize>
+              <Name>Text3</Name>
+              <Page isRef="4" />
+              <Parent isRef="10" />
+              <Text>Session Name</Text>
+              <TextBrush>[54:95:145]</TextBrush>
+              <TextFormat Ref="14" type="GeneralFormat" isKey="true" />
+              <Type>Expression</Type>
+              <VertAlignment>Center</VertAlignment>
+            </Text3>
+            <Text4 Ref="15" type="Text" isKey="true">
+              <Border>Top, Bottom;[54:95:145];1;Solid;False;4;Black</Border>
+              <Brush>Transparent</Brush>
+              <ClientRectangle>13.8,0,5.2,0.6</ClientRectangle>
+              <ComponentStyle>ColumnHeader</ComponentStyle>
+              <Conditions isList="true" count="0" />
+              <Font>Calibri,11,Bold,Point,False,0</Font>
+              <Guid>d5769a0233544c97858998cfb94deb1a</Guid>
+              <LinesOfUnderline>None</LinesOfUnderline>
+              <Margins>0,0,0,0</Margins>
+              <MaxSize>0,0</MaxSize>
+              <MinSize>0,0</MinSize>
+              <Name>Text4</Name>
+              <Page isRef="4" />
+              <Parent isRef="10" />
+              <Text>Date</Text>
+              <TextBrush>[54:95:145]</TextBrush>
+              <TextFormat Ref="16" type="GeneralFormat" isKey="true" />
+              <Type>Expression</Type>
+              <VertAlignment>Center</VertAlignment>
+            </Text4>
+          </Components>
+          <ComponentStyle>ColumnHeader</ComponentStyle>
+          <Conditions isList="true" count="0" />
+          <MaxHeight>0</MaxHeight>
+          <MinHeight>0</MinHeight>
+          <Name>PageHeader2</Name>
+          <Page isRef="4" />
+          <Parent isRef="4" />
+        </PageHeader2>
+        <GroupHeader1 Ref="17" type="GroupHeaderBand" isKey="true">
+          <Brush>Transparent</Brush>
+          <ClientRectangle>0,5,19,0.8</ClientRectangle>
+          <Components isList="true" count="1">
+            <Text9 Ref="18" type="Text" isKey="true">
+              <Brush>Transparent</Brush>
+              <ClientRectangle>0,0,19,0.8</ClientRectangle>
+              <Conditions isList="true" count="0" />
+              <Font>Cambria,14.25,Bold,Point,False,0</Font>
+              <LinesOfUnderline>None</LinesOfUnderline>
+              <Margins>0,0,0,0</Margins>
+              <MaxSize>0,0</MaxSize>
+              <MinSize>0,0</MinSize>
+              <Name>Text9</Name>
+              <Page isRef="4" />
+              <Parent isRef="17" />
+              <Text>{Feedback.PageEventName}</Text>
+              <TextBrush>[54:95:145]</TextBrush>
+              <TextFormat Ref="19" type="GeneralFormat" isKey="true" />
+              <Type>Expression</Type>
+              <VertAlignment>Center</VertAlignment>
+            </Text9>
+          </Components>
+          <ComponentStyle>GroupHeader</ComponentStyle>
+          <Condition>{Feedback.PageEventName}</Condition>
+          <Conditions isList="true" count="0" />
+          <MaxHeight>0</MaxHeight>
+          <MinHeight>0</MinHeight>
+          <Name>GroupHeader1</Name>
+          <Page isRef="4" />
+          <Parent isRef="4" />
+        </GroupHeader1>
+        <Data1 Ref="20" type="DataBand" isKey="true">
+          <Brush>Transparent</Brush>
+          <ClientRectangle>0,6.6,19,0.6</ClientRectangle>
+          <Components isList="true" count="3">
+            <Text6 Ref="21" type="Text" isKey="true">
+              <Brush>EmptyBrush</Brush>
+              <ClientRectangle>0,0,7,0.6</ClientRectangle>
+              <Conditions isList="true" count="0" />
+              <Font>Calibri,11,Bold,Point,False,0</Font>
+              <LinesOfUnderline>None</LinesOfUnderline>
+              <Margins>0,0,0,0</Margins>
+              <MaxSize>0,0</MaxSize>
+              <MinSize>0,0</MinSize>
+              <Name>Text6</Name>
+              <Page isRef="4" />
+              <Parent isRef="20" />
+              <Text>{Feedback.Data}</Text>
+              <TextBrush>[54:95:145]</TextBrush>
+              <TextFormat Ref="22" type="GeneralFormat" isKey="true" />
+              <VertAlignment>Center</VertAlignment>
+            </Text6>
+            <Text7 Ref="23" type="Text" isKey="true">
+              <Brush>EmptyBrush</Brush>
+              <ClientRectangle>7,0,6.8,0.6</ClientRectangle>
+              <Conditions isList="true" count="0" />
+              <Font>Calibri,11,Bold,Point,False,0</Font>
+              <Hyperlink>/sitecore/shell/Applications/Analytics/SessionInformation/SessionInformation.aspx?sid={Feedback.SessionId}</Hyperlink>
+              <LinesOfUnderline>None</LinesOfUnderline>
+              <Margins>0,0,0,0</Margins>
+              <MaxSize>0,0</MaxSize>
+              <MinSize>0,0</MinSize>
+              <Name>Text7</Name>
+              <Page isRef="4" />
+              <Parent isRef="20" />
+              <Text>{IIF(Feedback.BusinessName != "",Feedback.BusinessName,"N/A")}</Text>
+              <TextBrush>[54:95:145]</TextBrush>
+              <TextFormat Ref="24" type="GeneralFormat" isKey="true" />
+              <Type>Expression</Type>
+              <VertAlignment>Center</VertAlignment>
+            </Text7>
+            <Text8 Ref="25" type="Text" isKey="true">
+              <Brush>EmptyBrush</Brush>
+              <ClientRectangle>13.8,0,5.2,0.6</ClientRectangle>
+              <Conditions isList="true" count="0" />
+              <Font>Calibri,11,Bold,Point,False,0</Font>
+              <LinesOfUnderline>None</LinesOfUnderline>
+              <Margins>0,0,0,0</Margins>
+              <MaxSize>0,0</MaxSize>
+              <MinSize>0,0</MinSize>
+              <Name>Text8</Name>
+              <Page isRef="4" />
+              <Parent isRef="20" />
+              <Text>{Feedback.Timestamp}</Text>
+              <TextBrush>[54:95:145]</TextBrush>
+              <TextFormat Ref="26" type="GeneralFormat" isKey="true" />
+              <VertAlignment>Center</VertAlignment>
+            </Text8>
+          </Components>
+          <Conditions isList="true" count="0" />
+          <DataRelationName />
+          <DataSourceName>Feedback</DataSourceName>
+          <EvenStyle>EvenRow</EvenStyle>
+          <Filters isList="true" count="0" />
+          <MaxHeight>0</MaxHeight>
+          <MinHeight>0</MinHeight>
+          <Name>Data1</Name>
+          <OddStyle>OddRow</OddStyle>
+          <Page isRef="4" />
+          <Parent isRef="4" />
+          <Sort isList="true" count="0" />
+        </Data1>
+      </Components>
+      <Conditions isList="true" count="0" />
+      <Guid>07f01f59d5f64faeab2194d128d0ac56</Guid>
+      <Margins>1,1,1,1</Margins>
+      <Name>Page1</Name>
+      <Page isRef="4" />
+      <PageHeight>29.7</PageHeight>
+      <PageWidth>21</PageWidth>
+      <Report isRef="0" />
+      <Watermark Ref="27" type="Stimulsoft.Report.Components.StiWatermark" isKey="true">
+        <Font>Arial,100</Font>
+        <TextBrush>[50:0:0:0]</TextBrush>
+      </Watermark>
+    </Page1>
+  </Pages>
+  <PrinterSettings Ref="28" type="Stimulsoft.Report.Print.StiPrinterSettings" isKey="true" />
+  <ReferencedAssemblies isList="true" count="10">
+    <value>System.Dll</value>
+    <value>System.Drawing.Dll</value>
+    <value>System.Windows.Forms.Dll</value>
+    <value>System.Data.Dll</value>
+    <value>System.Xml.Dll</value>
+    <value>Stimulsoft.Controls.Dll</value>
+    <value>Stimulsoft.Base.Dll</value>
+    <value>Stimulsoft.Report.Dll</value>
+    <value>Sitecore.Analytics.dll</value>
+    <value>Sitecore.Oracle.dll</value>
+  </ReferencedAssemblies>
+  <ReportAlias>AuthoringFeedback</ReportAlias>
+  <ReportAuthor>Sitecore</ReportAuthor>
+  <ReportChanged>10/1/2008 2:39:29 PM</ReportChanged>
+  <ReportCreated>7/11/2008 10:00:10 AM</ReportCreated>
+  <ReportDescription>Authoring Feedback</ReportDescription>
+  <ReportGuid>6e34ce86f90e4f2180de4c16694c62c3</ReportGuid>
+  <ReportName>AuthoringFeedback</ReportName>
+  <ReportUnit>Centimeters</ReportUnit>
+  <ReportVersion>2008.1.200</ReportVersion>
+  <Script>using System;
+using System.Drawing;
+using System.Windows.Forms;
+using System.Data;
+using Stimulsoft.Controls;
+using Stimulsoft.Base.Drawing;
+using Stimulsoft.Report;
+using Stimulsoft.Report.Dialogs;
+using Stimulsoft.Report.Components;
+
+namespace Reports
+{
+    
+    public class AuthoringFeedback : Stimulsoft.Report.StiReport
+    {
+        
+        public AuthoringFeedback()
+        {
+            this.InitializeComponent();
+        }
+        #region StiReport Designer generated code - do not modify#endregion StiReport Designer generated code - do not modify
+    }
+}</Script>
+  <ScriptLanguage>CSharp</ScriptLanguage>
+  <Styles isList="true" count="6">
+    <Title Ref="29" type="Stimulsoft.Report.StiStyle" isKey="true">
+      <Border>Bottom;[23:54:95];1;Solid;False;4;Black</Border>
+      <Brush>Transparent</Brush>
+      <Font>Cambria,26.25,Regular,Point,False,0</Font>
+      <Name>Title</Name>
+      <TextBrush>[23:54:95]</TextBrush>
+    </Title>
+    <Subtitle Ref="30" type="Stimulsoft.Report.StiStyle" isKey="true">
+      <Brush>Transparent</Brush>
+      <Font>Cambria,12,Italic,Point,False,0</Font>
+      <Name>Subtitle</Name>
+      <TextBrush>[23:54:95]</TextBrush>
+    </Subtitle>
+    <ColumnHeader Ref="31" type="Stimulsoft.Report.StiStyle" isKey="true">
+      <Border>Top, Bottom;[54:95:145];1;Solid;False;4;Black</Border>
+      <Brush>Transparent</Brush>
+      <Font>Calibri,11,Bold,Point,False,0</Font>
+      <Name>ColumnHeader</Name>
+      <TextBrush>[54:95:145]</TextBrush>
+    </ColumnHeader>
+    <EvenRow Ref="32" type="Stimulsoft.Report.StiStyle" isKey="true">
+      <Brush>[211:223:238]</Brush>
+      <Font>Calibri,11,Bold,Point,False,0</Font>
+      <Name>EvenRow</Name>
+      <TextBrush>[54:95:145]</TextBrush>
+    </EvenRow>
+    <OddRow Ref="33" type="Stimulsoft.Report.StiStyle" isKey="true">
+      <Brush>Transparent</Brush>
+      <Font>Calibri,11,Bold,Point,False,0</Font>
+      <Name>OddRow</Name>
+      <TextBrush>[54:95:145]</TextBrush>
+    </OddRow>
+    <GroupHeader Ref="34" type="Stimulsoft.Report.StiStyle" isKey="true">
+      <Brush>Transparent</Brush>
+      <Font>Cambria,14.25,Bold,Point,False,0</Font>
+      <Name>GroupHeader</Name>
+      <TextBrush>[54:95:145]</TextBrush>
+    </GroupHeader>
+  </Styles>
+</StiSerializer>

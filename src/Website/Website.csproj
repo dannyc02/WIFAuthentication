@@ -57,6 +57,12 @@
     <Content Include="Account\Login.aspx" />
     <Content Include="Account\Register.aspx" />
     <Content Include="FederationMetadata\2007-06\FederationMetadata.xml" />
+    <Content Include="layouts\Sample Inner Sublayout.ascx" />
+    <Content Include="layouts\Sample layout.aspx" />
+    <Content Include="layouts\Sample Sublayout.ascx" />
+    <Content Include="layouts\system\VisitorIdentification.aspx" />
+    <Content Include="layouts\xmlcontrol.aspx" />
+    <Content Include="sitecore modules\Shell\FedAuthenticator\sso.aspx" />
     <Content Include="Styles\Site.css" />
     <Content Include="Default.aspx" />
     <Content Include="Global.asax" />
@@ -133,6 +139,34 @@
   <ItemGroup>
     <Content Include="Account\Web.config" />
     <Content Include="Site.Master" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="App_Config\Commands.config" />
+    <Content Include="App_Config\ConnectionStrings.config" />
+    <Content Include="App_Config\ConnectionStringsOracle.config" />
+    <Content Include="App_Config\FieldTypes.config" />
+    <Content Include="App_Config\Icons.config" />
+    <None Include="App_Config\Include\DataFolder.config.example" />
+    <None Include="App_Config\Include\EventHandler.config.example" />
+    <None Include="App_Config\Include\ForwardingSecurityEvents.config.example" />
+    <None Include="App_Config\Include\LiveMode.config.example" />
+    <None Include="App_Config\Include\ScalabilitySettings.config.example" />
+    <Content Include="App_Config\Include\Sitecore.WebDAV.config" />
+    <None Include="App_Config\Include\SitecoreSettings.config.example" />
+    <None Include="App_Config\Include\SiteDefinition.config.example" />
+    <None Include="App_Config\Include\WebDeploy.config.example" />
+    <None Include="App_Config\Include\XslExtension.config.example" />
+    <Content Include="App_Config\LanguageDefinitions.config" />
+    <Content Include="App_Config\MimeTypes.config" />
+    <Content Include="App_Config\Portraits.config" />
+    <Content Include="App_Config\Prefetch\Common.config" />
+    <Content Include="App_Config\Prefetch\Core.config" />
+    <Content Include="App_Config\Prefetch\Master.config" />
+    <Content Include="App_Config\Prefetch\Web.config" />
+    <Content Include="App_Config\Prototypes.config" />
+    <Content Include="App_Config\Security\Domains.config" />
+    <Content Include="App_Config\Security\GlobalRoles.config" />
+    <Content Include="App_Config\XamlSharp.config" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v10.0\WebApplications\Microsoft.WebApplication.targets" />

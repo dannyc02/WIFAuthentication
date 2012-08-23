@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<xamlControls 
+  xmlns:x="http://www.sitecore.net/xaml"
+  xmlns:ajax="http://www.sitecore.net/ajax"
+  xmlns:rest="http://www.sitecore.net/rest"
+  xmlns:r="http://www.sitecore.net/renderings"
+  xmlns:xmlcontrol="http://www.sitecore.net/xmlcontrols"
+  xmlns:p="http://schemas.sitecore.net/Visual-Studio-Intellisense"
+  xmlns:asp="http://www.sitecore.net/microsoft/webcontrols"
+  xmlns:html="http://www.sitecore.net/microsoft/htmlcontrols"
+  xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
+
+  <Sitecore.Shell.Applications.Rules.RulesEditor x:inherits="Sitecore.Shell.Applications.Rules.RulesEditor.RulesEditorPage,Sitecore.Client">
+    
+    <Sitecore.Controls.DialogPage runat="server" Icon="Applications/32x32/window_add.png" Header="Rule Set Editor" Text="Select the conditions and actions first. Then specify the values in the description.">
+      <AjaxScriptManager runat="server" />
+      <ContinuationManager runat="server" />
+
+      <Script Src="/sitecore/shell/controls/lib/scriptaculous/scriptaculous.js" type="text/javascript" runat="server" />
+      <Script Src="/sitecore/shell/controls/lib/scriptaculous/dragdrop.js" type="text/javascript" runat="server" />
+
+      <script type="text/javascript">
+        function create() {
+        Sortable.create('Description', { tag:'DIV', only:'Draggable', handle:'DragHandle', onUpdate:function() { update() } })
+        }
+
+        function update() {
+        setTimeout(function() { scForm.postRequest('','','','Sort("' + Sortable.sequence('Description') + '")'); }, 1); 
+        }
+
+        function destroy() {
+        Sortable.destroy('Description');
+        }
+
+        document.observe("dom:loaded", function() {
+        create();
+        });
+      </script>
+      <style>
+        .scCondition,
+        .scCondition:link,
+        .scCondition:visited,
+        .scCondition:hover,
+        .scCondition:active {
+        color:#303030;
+        text-decoration:none;
+        white-space:nowrap;
+        }
+
+        .scCondition:active {
+        color:#000000;
+        }
+
+        .scCondition:hover {
+        color:blue;
+        text-decoration:underline
+        }
+      </style>
+
+      <GridPanel runat="server" Width="100%" Height="100%">
+        <Border runat="server" Margin="0px 0px 4px 0px">
+          <Literal runat="server" Text="1. Select the conditions for the rule:" />
+        </Border>
+
+        <Scrollbox class="scScrollbox scFixSize" runat="server" Height="100%" GridPanel.Height="33%" Padding="0px">
+          <Border ID="Conditions" Padding="4px" runat="server" />
+        </Scrollbox>
+
+        <Border runat="server" Margin="8px 0px 4px 0px">
+          <Literal runat="server" Text="2. Select the actions for the rule:" />
+        </Border>
+
+        <Scrollbox class="scScrollbox scFixSize" runat="server" Height="100%" GridPanel.Height="33%" Padding="0px">
+          <Border ID="Actions" Padding="4px" runat="server" />
+        </Scrollbox>
+
+        <Border runat="server" Margin="8px 0px 4px 0px">
+          <Literal runat="server" Text="3. Rule description (click an underlined value to edit it):" />
+        </Border>
+
+        <Scrollbox class="scScrollbox scFixSize scFixSize12" runat="server" Height="100%" GridPanel.Height="33%" Padding="0px">
+          <Border ID="Description" Padding="4px" runat="server" />
+        </Scrollbox>
+      </GridPanel>
+
+    </Sitecore.Controls.DialogPage>
+    
+  </Sitecore.Shell.Applications.Rules.RulesEditor>
+</xamlControls>

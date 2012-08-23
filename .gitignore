@@ -54,3 +54,5 @@ Data/
 # GRANTS SPECIFIC
 /*.ncrunchsolution
 /*.ncrunchsolution.user
+
+/Databases/*

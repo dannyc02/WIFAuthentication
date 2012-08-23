@@ -1,0 +1,4 @@
+INFO:Installing package: C:\Projects\WIFAuthentication\src\Website\sitecore\admin\packages\FedAuthenticator.web.update
+INFO:Installation Mode: Install
+INFO:Installation of package 'C:\Projects\WIFAuthentication\src\Website\sitecore\admin\packages\FedAuthenticator.web.update' has been finished.
+INFO:Post installation step for the package 'C:\Projects\WIFAuthentication\src\Website\sitecore\admin\packages\FedAuthenticator.web.update' has been executed.

@@ -1,0 +1,28 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 11.00
+# Visual Studio 2010
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FedAuthenticator", "FedAuthenticator\FedAuthenticator.csproj", "{324CA35D-D198-4F67-BC03-4C348465A2D9}"
+EndProject
+Project("{CAA73BB0-EF22-4D79-A57E-DF67B3BA9C80}") = "FedAuthenticator.web", "FedAuthenticator.web\FedAuthenticator.web.scproj", "{E62AAC54-5CFE-4D0E-B47C-5B18B137AEE5}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{324CA35D-D198-4F67-BC03-4C348465A2D9}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{324CA35D-D198-4F67-BC03-4C348465A2D9}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{324CA35D-D198-4F67-BC03-4C348465A2D9}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{324CA35D-D198-4F67-BC03-4C348465A2D9}.Release|Any CPU.Build.0 = Release|Any CPU
+		{E62AAC54-5CFE-4D0E-B47C-5B18B137AEE5}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E62AAC54-5CFE-4D0E-B47C-5B18B137AEE5}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E62AAC54-5CFE-4D0E-B47C-5B18B137AEE5}.Debug|Any CPU.Deploy.0 = Debug|Any CPU
+		{E62AAC54-5CFE-4D0E-B47C-5B18B137AEE5}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E62AAC54-5CFE-4D0E-B47C-5B18B137AEE5}.Release|Any CPU.Build.0 = Release|Any CPU
+		{E62AAC54-5CFE-4D0E-B47C-5B18B137AEE5}.Release|Any CPU.Deploy.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal

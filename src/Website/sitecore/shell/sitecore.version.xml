@@ -1,0 +1,13 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<information>
+  <version>
+    <major>6</major>
+    <minor>4</minor>
+    <build>1</build>
+    <revision>110720</revision>
+  </version>
+  <date>July 20, 2011</date>
+  <title>Sitecore.NET</title>
+  <company>Sitecore Corporation</company>
+  <copyright>© Sitecore. All rights reserved.</copyright>
+</information>

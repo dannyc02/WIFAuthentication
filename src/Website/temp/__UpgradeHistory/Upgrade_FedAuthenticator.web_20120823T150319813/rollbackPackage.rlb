@@ -1,0 +1,94 @@
+----startentry----
+deletedfolders/_DEV
+content-length:
+175
+<?xml version="1.0" encoding="utf-8"?>
+<deleteFolder>
+  <collisionbehavior></collisionbehavior>
+  <path>\_DEV</path>
+  <id>\_DEV</id>
+  <parent></parent>
+</deleteFolder>----endentry----
+----startentry----
+deletedfiles/_DEV/DeployedItems.xml
+content-length:
+254
+<?xml version="1.0" encoding="utf-8"?>
+<deleteFile>
+  <collisionbehavior></collisionbehavior>
+  <path>_DEV\DeployedItems.xml</path>
+  <id>_DEV\DeployedItems.xml</id>
+  <parent></parent>
+  <hashCode>BouRAfk7UloHyfCxrUN3ug==</hashCode>
+</deleteFile>----endentry----
+----startentry----
+deletedfiles/App_Config/Include/FedAuthenticator.config
+content-length:
+294
+<?xml version="1.0" encoding="utf-8"?>
+<deleteFile>
+  <collisionbehavior></collisionbehavior>
+  <path>App_Config\Include\FedAuthenticator.config</path>
+  <id>App_Config\Include\FedAuthenticator.config</id>
+  <parent></parent>
+  <hashCode>PhJGl0FHrZEaOpdmE7ZkGQ==</hashCode>
+</deleteFile>----endentry----
+----startentry----
+deletedfiles/bin/FedAuthenticator.dll
+content-length:
+258
+<?xml version="1.0" encoding="utf-8"?>
+<deleteFile>
+  <collisionbehavior></collisionbehavior>
+  <path>bin\FedAuthenticator.dll</path>
+  <id>bin\FedAuthenticator.dll</id>
+  <parent></parent>
+  <hashCode>9I+vSYVONlwMf/6JeTEAgw==</hashCode>
+</deleteFile>----endentry----
+----startentry----
+deletedfiles/bin/FedAuthenticator.pdb
+content-length:
+258
+<?xml version="1.0" encoding="utf-8"?>
+<deleteFile>
+  <collisionbehavior></collisionbehavior>
+  <path>bin\FedAuthenticator.pdb</path>
+  <id>bin\FedAuthenticator.pdb</id>
+  <parent></parent>
+  <hashCode>26Wg9ayegGWx6GgnIw6c4Q==</hashCode>
+</deleteFile>----endentry----
+----startentry----
+deletedfiles/bin/HedgehogDevelopment.SitecoreProject.PackageInstallPostProcessor.dll
+content-length:
+352
+<?xml version="1.0" encoding="utf-8"?>
+<deleteFile>
+  <collisionbehavior></collisionbehavior>
+  <path>bin\HedgehogDevelopment.SitecoreProject.PackageInstallPostProcessor.dll</path>
+  <id>bin\HedgehogDevelopment.SitecoreProject.PackageInstallPostProcessor.dll</id>
+  <parent></parent>
+  <hashCode>dIoTiGXTlWsZDw2Ns/rZpg==</hashCode>
+</deleteFile>----endentry----
+----startentry----
+deletedfolders/sitecore modules/shell/FedAuthenticator
+content-length:
+243
+<?xml version="1.0" encoding="utf-8"?>
+<deleteFolder>
+  <collisionbehavior></collisionbehavior>
+  <path>sitecore modules\shell\FedAuthenticator</path>
+  <id>sitecore modules\shell\FedAuthenticator</id>
+  <parent></parent>
+</deleteFolder>----endentry----
+----startentry----
+deletedfiles/sitecore modules/shell/FedAuthenticator/sso.aspx
+content-length:
+306
+<?xml version="1.0" encoding="utf-8"?>
+<deleteFile>
+  <collisionbehavior></collisionbehavior>
+  <path>sitecore modules\shell\FedAuthenticator\sso.aspx</path>
+  <id>sitecore modules\shell\FedAuthenticator\sso.aspx</id>
+  <parent></parent>
+  <hashCode>0wAgFnZD1UZJnP7riEeboQ==</hashCode>
+</deleteFile>----endentry----

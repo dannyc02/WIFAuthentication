@@ -138,7 +138,8 @@ public class CustomSecurityTokenService : SecurityTokenService
         // Update the application's configuration file too to reflect new claims requirement.
 
         outputIdentity.Claims.Add( new Claim( System.IdentityModel.Claims.ClaimTypes.Name, principal.Identity.Name ) );
-        outputIdentity.Claims.Add( new Claim( ClaimTypes.Role, "Manager" ) );
+        outputIdentity.Claims.Add(new Claim(ClaimTypes.Role, "Registered Users"));
+        outputIdentity.Claims.Add(new Claim(ClaimTypes.Role, "Author"));
 
         return outputIdentity;
     }

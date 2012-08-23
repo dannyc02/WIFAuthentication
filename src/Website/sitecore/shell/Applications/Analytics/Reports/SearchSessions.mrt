@@ -1,0 +1,557 @@
+﻿<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<StiSerializer version="1.0" application="StiReport">
+  <Dictionary Ref="1" type="Dictionary" isKey="true">
+    <DataSources isList="true" count="4">
+      <Sessions Ref="3" type="Stimulsoft.Report.Dictionary.StiSqlSource" isKey="true">
+        <Alias>Sessions</Alias>
+        <Columns isList="true" count="18">
+          <value>SessionIdObject,System.Object</value>
+          <value>IpOwnerId,System.Guid</value>
+          <value>Name,System.String</value>
+          <value>City,System.String</value>
+          <value>Country,System.String</value>
+          <value>Region,System.String</value>
+          <value>SessionId,System.Guid</value>
+          <value>Timestamp,System.DateTime</value>
+          <value>GlobalVisitNo,System.Int32</value>
+          <value>CurrentPage,System.Int32</value>
+          <value>Url,System.String</value>
+          <value>Keywords,System.String</value>
+          <value>SearchCount,System.Int32</value>
+          <value>ISP,System.String</value>
+          <value>VisitorIdentification,System.Int32</value>
+          <value>Description,System.String</value>
+          <value>GlobalSessionId,System.Guid</value>
+          <value>LastPageTimestamp,System.DateTime</value>
+        </Columns>
+        <CommandTimeout>0</CommandTimeout>
+        <Dictionary isRef="1" />
+        <Name>Sessions</Name>
+        <NameInSource>DataConnection</NameInSource>
+        <Parameters isList="true" count="3">
+          <value>_x0040_Term,,22,255</value>
+          <value>_x0040_StartDate,StartDate,4,0</value>
+          <value>_x0040_EndDate,EndDate,4,0</value>
+        </Parameters>
+        <SqlCommand>
+select 
+	IPOwner.Name,
+	IP.City,
+	IPOwner.Country,
+	IPOwner.IpOwnerId,
+	IP.Region,
+	IP.IspName as ISP,
+	Session.SessionId,
+	Session.Timestamp,
+	Session.GlobalVisitNo,
+	Session.CurrentPage,
+	Session.GlobalSessionId,
+	Session.LastPageTimestamp,
+	ReferringSite.Url,
+	Keyword.Keywords,
+	Session.SessionId as SessionIdObject,
+	VisitorIdentification.VisitorIdentification,
+	VisitorIdentification.Description,
+	Count(*) as SearchCount 
+from 
+	IPOwner,
+	IP,
+	Session,
+	GlobalSession,
+	VisitorIdentification,
+	ReferringSite,
+	Keyword,
+	Page,
+	PageEvent 
+where 
+	PageEvent.PageEventDefinitionId = '0c179613-2073-41ab-992e-027d03d523bf' and 
+	PageEvent.DataKey = @Term and
+	PageEvent.PageId = Page.PageId and
+
+	Session.Timestamp &gt;= @StartDate and
+	Session.Timestamp &lt;= @EndDate and
+	Session.GlobalSessionId = GlobalSession.GlobalSessionId and
+	Session.SessionId = Page.SessionId and
+	Session.IpId = IP.IpId and
+	IP.IpOwnerId = IPOwner.IpOwnerId and
+	GlobalSession.VisitorIdentification = VisitorIdentification.VisitorIdentification and
+	Session.ReferringSiteId = ReferringSite.ReferringSiteId and
+	Session.KeywordId = Keyword.KeywordId
+  
+	{IpOwner}
+	{Ip}
+	{Session}
+	{GlobalSession}
+	{ReferringSite}
+	{Keyword}
+	{Page}
+	{PageEvent}
+  
+group by 
+	IPOwner.Name,
+	IP.City,
+	IPOwner.Country,
+	IPOwner.IpOwnerId,
+	IP.Region,
+	IP.IspName,
+	Session.SessionId,
+	Session.Timestamp,
+	Session.LastPageTimestamp,
+	Session.GlobalSessionId,
+	Session.GlobalVisitNo,
+	Session.CurrentPage,
+	ReferringSite.Url,
+	Keyword.Keywords,
+	VisitorIdentification.VisitorIdentification,
+	VisitorIdentification.Description 
+order by 
+	SearchCount desc,
+	Session.Timestamp
+</SqlCommand>
+      </Sessions>
+      <Goals Ref="4" type="Stimulsoft.Report.Dictionary.StiSqlSource" isKey="true">
+        <Alias>Goals</Alias>
+        <Columns isList="true" count="2">
+          <value>Timestamp,System.DateTime</value>
+          <value>Name,System.String</value>
+        </Columns>
+        <CommandTimeout>0</CommandTimeout>
+        <Dictionary isRef="1" />
+        <Name>Goals</Name>
+        <NameInSource>DataConnection</NameInSource>
+        <Parameters isList="true" count="1">
+          <value>_x0040_SessionIdObject,IsNull_x0028_Sessions_x002C__x0020__x0022_SessionIdObject_x0022__x0029__x0020__x003F__x0020_DBNull.Value_x0020_:_x0020_Sessions.SessionIdObject,14,0</value>
+        </Parameters>
+        <ReconnectOnEachRow>True</ReconnectOnEachRow>
+        <SqlCommand>
+select 
+	Page.Timestamp,
+	PageEventDefinition.Name 
+from 
+	Page,
+	PageEvent,
+	PageEventDefinition 
+where 
+	Page.SessionId = @SessionIdObject and
+	PageEvent.PageId = Page.PageId and
+	PageEventDefinition.PageEventDefinitionId = PageEvent.PageEventDefinitionId and
+	PageEventDefinition.IsGoal = 1 
+order by 
+	Page.Timestamp
+</SqlCommand>
+      </Goals>
+      <Tags Ref="5" type="Stimulsoft.Report.Dictionary.StiSqlSource" isKey="true">
+        <Alias>Tags</Alias>
+        <Columns isList="true" count="1">
+          <value>Data,System.String</value>
+        </Columns>
+        <CommandTimeout>0</CommandTimeout>
+        <Dictionary isRef="1" />
+        <Name>Tags</Name>
+        <NameInSource>DataConnection</NameInSource>
+        <Parameters isList="true" count="1">
+          <value>_x0040_SessionIdObject,IsNull_x0028_Sessions_x002C__x0020__x0022_SessionIdObject_x0022__x0029__x0020__x003F__x0020_DBNull.Value_x0020_:_x0020_Sessions.SessionIdObject,14,0</value>
+        </Parameters>
+        <ReconnectOnEachRow>True</ReconnectOnEachRow>
+        <SqlCommand>
+select distinct 
+	Tag.Data 
+from 
+	Tag,
+	Session 
+where 
+	Session.SessionId = @SessionIdObject and
+	Session.GlobalSessionId = Tag.GlobalSessionId	
+order by 
+	Tag.Data
+</SqlCommand>
+      </Tags>
+      <Subscription Ref="6" type="Stimulsoft.Report.Dictionary.StiSqlSource" isKey="true">
+        <Alias>Subscription</Alias>
+        <Columns isList="true" count="2">
+          <value>IpOwnerId,System.Guid</value>
+          <value>Recipients,System.String</value>
+        </Columns>
+        <CommandTimeout>0</CommandTimeout>
+        <Dictionary isRef="1" />
+        <Name>Subscription</Name>
+        <NameInSource>DataConnection</NameInSource>
+        <Parameters isList="true" count="1">
+          <value>_x0040_Email,,22,500</value>
+        </Parameters>
+        <SqlCommand>
+select 
+	IpOwnerId,
+	Recipients 
+from 
+	Subscription 
+where 
+	Recipients = @Email
+</SqlCommand>
+      </Subscription>
+    </DataSources>
+    <Relations isList="true" count="1">
+      <SubscriptionRelation Ref="7" type="DataRelation" isKey="true">
+        <Alias>SubscriptionRelation</Alias>
+        <ChildColumns isList="true" count="1">
+          <value>IpOwnerId</value>
+        </ChildColumns>
+        <ChildSource isRef="3" />
+        <Dictionary isRef="1" />
+        <Name>SubscriptionRelation</Name>
+        <NameInSource>SubscriptionRelation</NameInSource>
+        <ParentColumns isList="true" count="1">
+          <value>IpOwnerId</value>
+        </ParentColumns>
+        <ParentSource isRef="6" />
+      </SubscriptionRelation>
+    </Relations>
+    <Report isRef="0" />
+    <Variables isList="true" count="3">
+      <value>,StartDate,StartDate,System.DateTime,DateTime.Now.AddDays_x0028_-7_x0029_,False,True</value>
+      <value>,EndDate,EndDate,System.DateTime,DateTime.Now,False,True</value>
+      <value>,ReportTitle,ReportTitle,System.String,Sessions,False,False</value>
+    </Variables>
+  </Dictionary>
+  <EngineVersion>EngineV1</EngineVersion>
+  <GlobalizationStrings isList="true" count="0" />
+  <Pages isList="true" count="1">
+    <Page1 Ref="8" type="Page" isKey="true">
+      <Border>None;Black;2;Solid;False;4;Black</Border>
+      <Brush>Transparent</Brush>
+      <Components isList="true" count="5">
+        <PageHeader Ref="9" type="PageHeaderBand" isKey="true">
+          <Border>Bottom;[23:54:95];1;Solid;False;4;Black</Border>
+          <Brush>Transparent</Brush>
+          <ClientRectangle>0,0.4,19,1</ClientRectangle>
+          <Components isList="true" count="1">
+            <Text2 Ref="10" type="Text" isKey="true">
+              <Border>Bottom;[23:54:95];1;Solid;False;4;Black</Border>
+              <Brush>Transparent</Brush>
+              <CanGrow>True</CanGrow>
+              <CanShrink>True</CanShrink>
+              <ClientRectangle>0,0,19,1</ClientRectangle>
+              <ComponentStyle>Title</ComponentStyle>
+              <Conditions isList="true" count="0" />
+              <Font>Cambria,26.25,Regular,Point,False,0</Font>
+              <Margins>0,0,0,0</Margins>
+              <Name>Text2</Name>
+              <Page isRef="8" />
+              <Parent isRef="9" />
+              <Text>{ReportTitle} - '{Sessions.Parameters["@Term"].ParameterValue}'</Text>
+              <TextBrush>[23:54:95]</TextBrush>
+              <Type>Expression</Type>
+              <VertAlignment>Center</VertAlignment>
+            </Text2>
+          </Components>
+          <ComponentStyle>Title</ComponentStyle>
+          <Conditions isList="true" count="0" />
+          <Name>PageHeader</Name>
+          <Page isRef="8" />
+          <Parent isRef="8" />
+        </PageHeader>
+        <GroupHeader1 Ref="11" type="GroupHeaderBand" isKey="true">
+          <Brush>Transparent</Brush>
+          <ClientRectangle>0,2.2,19,1.2</ClientRectangle>
+          <Components isList="true" count="2">
+            <Text3 Ref="12" type="Text" isKey="true">
+              <Brush>Transparent</Brush>
+              <ClientRectangle>0,0.8,19,0.4</ClientRectangle>
+              <Conditions isList="true" count="0" />
+              <Font>Calibri,10,Regular,Point,False,0</Font>
+              <Guid>bd86956e48ce4120852e2ff28894a18b</Guid>
+              <Margins>0,0,0,0</Margins>
+              <Name>Text3</Name>
+              <Page isRef="8" />
+              <Parent isRef="11" />
+              <Text>{string.IsNullOrEmpty(Sessions.City) ? "N/A" : Sessions.City}, {string.IsNullOrEmpty(Sessions.Country) ? "N/A" : Sessions.Country}, {string.IsNullOrEmpty(Sessions.Region) ? "N/A" : Sessions.Region} - ({string.IsNullOrEmpty(Sessions.ISP) ? "N/A" : Sessions.ISP})</Text>
+              <TextBrush>[54:95:145]</TextBrush>
+              <Type>Expression</Type>
+              <VertAlignment>Center</VertAlignment>
+            </Text3>
+            <Text1 Ref="13" type="Text" isKey="true">
+              <Brush>Transparent</Brush>
+              <ClientRectangle>0,0.4,19,0.4</ClientRectangle>
+              <ComponentStyle>OddRow</ComponentStyle>
+              <Conditions isList="true" count="0" />
+              <Font>Calibri,11,Bold,Point,False,0</Font>
+              <Guid>d7946de02cb447cfbb30a0c81cc57ffc</Guid>
+              <Margins>0,0,0,0</Margins>
+              <Name>Text1</Name>
+              <Page isRef="8" />
+              <Parent isRef="11" />
+              <Text>{string.IsNullOrEmpty(Sessions.Name) ? "N/A" : Sessions.Name}</Text>
+              <TextBrush>[54:95:145]</TextBrush>
+              <Type>Expression</Type>
+              <VertAlignment>Center</VertAlignment>
+            </Text1>
+          </Components>
+          <Condition>{Sessions.Name}</Condition>
+          <Conditions isList="true" count="0" />
+          <Name>GroupHeader1</Name>
+          <Page isRef="8" />
+          <Parent isRef="8" />
+          <SortDirection>None</SortDirection>
+        </GroupHeader1>
+        <Data1 Ref="14" type="DataBand" isKey="true">
+          <Brush>EmptyBrush</Brush>
+          <ClientRectangle>0,4.2,19,2</ClientRectangle>
+          <Components isList="true" count="5">
+            <Text4 Ref="15" type="Text" isKey="true">
+              <Brush>Transparent</Brush>
+              <ClientRectangle>0,0,19,0.4</ClientRectangle>
+              <ComponentStyle>OddRow</ComponentStyle>
+              <Conditions isList="true" count="0" />
+              <Font>Calibri,11,Bold,Point,False,0</Font>
+              <Guid>036d8f4fcef24467b5bee207460ee0ae</Guid>
+              <Hyperlink>/sitecore/shell/applications/analytics/default.aspx?r={"{"}AF4FC15A-1BAA-4F7A-94A4-01CFDC9D257F{"}"}&amp;p=1&amp;sessionid={Sessions.SessionId}</Hyperlink>
+              <Margins>0,0,0,0</Margins>
+              <Name>Text4</Name>
+              <Page isRef="8" />
+              <Parent isRef="14" />
+              <Text>{Sessions.Timestamp.ToString("yyyy-MMM-dd HH:mm:ss")}</Text>
+              <TextBrush>[54:95:145]</TextBrush>
+              <Type>Expression</Type>
+              <VertAlignment>Center</VertAlignment>
+            </Text4>
+            <Text6 Ref="16" type="Text" isKey="true">
+              <Brush>EmptyBrush</Brush>
+              <ClientRectangle>0,0.4,19,0.4</ClientRectangle>
+              <Conditions isList="true" count="0" />
+              <Font>Calibri,10,Regular,Point,False,0</Font>
+              <Guid>31632e0ed5aa4e328535b3b367395f6e</Guid>
+              <Margins>48,0,0,0</Margins>
+              <Name>Text6</Name>
+              <Page isRef="8" />
+              <Parent isRef="14" />
+              <Text>{Sessions.CurrentPage.ToString("#,##0")} page{Sessions.CurrentPage == 1 ? "" : "s"} viewed, spent {DateTime.Today.Add(Sessions.LastPageTimestamp - Sessions.Timestamp).ToString("HH:mm:ss")}</Text>
+              <TextBrush>DimGray</TextBrush>
+              <Type>Expression</Type>
+              <VertAlignment>Center</VertAlignment>
+            </Text6>
+            <Text5 Ref="17" type="Text" isKey="true">
+              <Brush>EmptyBrush</Brush>
+              <ClientRectangle>0,1.2,19,0.4</ClientRectangle>
+              <Conditions isList="true" count="0" />
+              <Font>Calibri,10,Regular,Point,False,0</Font>
+              <Guid>374fa12d32ed433c954819d14bf2dc78</Guid>
+              <Margins>48,0,0,0</Margins>
+              <Name>Text5</Name>
+              <Page isRef="8" />
+              <Parent isRef="14" />
+              <Text>Referred from {!string.IsNullOrEmpty(Sessions.Url) ? Sessions.Url : "(direct)"} {!string.IsNullOrEmpty(Sessions.Keywords) ? " - \"" + Sessions.Keywords + "\"" : ""}</Text>
+              <TextBrush>DimGray</TextBrush>
+              <Type>Expression</Type>
+              <VertAlignment>Center</VertAlignment>
+            </Text5>
+            <Text8 Ref="18" type="Text" isKey="true">
+              <Brush>EmptyBrush</Brush>
+              <ClientRectangle>0,0.8,19,0.4</ClientRectangle>
+              <Conditions isList="true" count="0" />
+              <Font>Calibri,10,Regular,Point,False,0</Font>
+              <Guid>42ecbd0c4b5c4c0e940fddee78990e4e</Guid>
+              <Hyperlink>/sitecore/shell/applications/analytics/default.aspx?r={"{"}289D46C3-B83E-4F4A-AF92-B27F7DFCA706{"}"}&amp;p=1&amp;globalsession={Sessions.GlobalSessionId}</Hyperlink>
+              <Margins>48,0,0,0</Margins>
+              <Name>Text8</Name>
+              <Page isRef="8" />
+              <Parent isRef="14" />
+              <Text>{Sessions.GlobalVisitNo}. visit</Text>
+              <TextBrush>DimGray</TextBrush>
+              <Type>Expression</Type>
+              <VertAlignment>Center</VertAlignment>
+            </Text8>
+            <Text7 Ref="19" type="Text" isKey="true">
+              <Brush>EmptyBrush</Brush>
+              <ClientRectangle>0,1.6,19,0.4</ClientRectangle>
+              <ComponentStyle>Detail</ComponentStyle>
+              <Conditions isList="true" count="0" />
+              <Font>Calibri,10,Regular,Point,False,0</Font>
+              <Guid>c2630bb112cd45fd83c8736ea93467a3</Guid>
+              <Margins>48,0,0,0</Margins>
+              <Name>Text7</Name>
+              <Page isRef="8" />
+              <Parent isRef="14" />
+              <Printable>False</Printable>
+              <Text>&lt;a href="#" onclick="javascript:showModalDialog('/sitecore/shell/~/xaml/Sitecore.Shell.Applications.Analytics.VisitorIdentification.aspx?sessionid={Sessions.SessionId}','','dialogHeight:700px;dialogWidth:550px;status:no;resizable:yes'); return false"&gt;{Sessions.VisitorIdentification == 0 ? "Classify" : Sessions.Description}&lt;/a&gt; / &lt;a href="#" onclick="javascript:showModalDialog('/sitecore/shell/~/xaml/Sitecore.Shell.Applications.Analytics.Subscription.aspx?sessionid={Sessions.SessionId}&amp;curr_state={string.IsNullOrEmpty(Sessions.SubscriptionRelation.Recipients)? "Subscribe" : "Unsubscribe"}','','dialogHeight:130px;dialogWidth:350px;status:no;resizable:yes'); return false"&gt;{string.IsNullOrEmpty(Sessions.SubscriptionRelation.Recipients) ? "Subscribe" : "Unsubscribe"}&lt;/a&gt; / &lt;a href="/sitecore/shell/applications/analytics/reportrunner/crm.aspx?sessionid={Sessions.SessionId}"&gt;CRM&lt;/a&gt;</Text>
+              <TextBrush>DimGray</TextBrush>
+              <TextQuality>Wysiwyg</TextQuality>
+              <Type>Expression</Type>
+              <VertAlignment>Center</VertAlignment>
+            </Text7>
+          </Components>
+          <Conditions isList="true" count="0" />
+          <DataSourceName>Sessions</DataSourceName>
+          <Filters isList="true" count="0" />
+          <Name>Data1</Name>
+          <Page isRef="8" />
+          <Parent isRef="8" />
+          <PrintIfDetailEmpty>True</PrintIfDetailEmpty>
+          <Sort isList="true" count="0" />
+        </Data1>
+        <Data2 Ref="20" type="DataBand" isKey="true">
+          <Brush>Transparent</Brush>
+          <ClientRectangle>0,7,19,0.4</ClientRectangle>
+          <Components isList="true" count="1">
+            <Text19 Ref="21" type="Text" isKey="true">
+              <Brush>EmptyBrush</Brush>
+              <CanGrow>True</CanGrow>
+              <CanShrink>True</CanShrink>
+              <ClientRectangle>0,0,19,0.4</ClientRectangle>
+              <Conditions isList="true" count="0" />
+              <Font>Calibri,10,Regular,Point,False,0</Font>
+              <Margins>48,0,0,0</Margins>
+              <Name>Text19</Name>
+              <Page isRef="8" />
+              <Parent isRef="20" />
+              <Text>Conversion: {Goals.Name}</Text>
+              <TextBrush>DimGray</TextBrush>
+              <Type>Expression</Type>
+              <VertAlignment>Center</VertAlignment>
+            </Text19>
+          </Components>
+          <Conditions isList="true" count="0" />
+          <DataSourceName>Goals</DataSourceName>
+          <Filters isList="true" count="0" />
+          <MasterComponent isRef="14" />
+          <Name>Data2</Name>
+          <Page isRef="8" />
+          <Parent isRef="8" />
+          <Sort isList="true" count="0" />
+        </Data2>
+        <Data3 Ref="22" type="DataBand" isKey="true">
+          <Brush>Transparent</Brush>
+          <ClientRectangle>0,8.2,19,0.4</ClientRectangle>
+          <Components isList="true" count="1">
+            <Text20 Ref="23" type="Text" isKey="true">
+              <Brush>EmptyBrush</Brush>
+              <CanGrow>True</CanGrow>
+              <CanShrink>True</CanShrink>
+              <ClientRectangle>0,0,19,0.4</ClientRectangle>
+              <Conditions isList="true" count="0" />
+              <Font>Calibri,10,Regular,Point,False,0</Font>
+              <Margins>48,0,0,0</Margins>
+              <Name>Text20</Name>
+              <Page isRef="8" />
+              <Parent isRef="22" />
+              <Text>Tag: {Tags.Data}</Text>
+              <TextBrush>DimGray</TextBrush>
+              <Type>Expression</Type>
+              <VertAlignment>Center</VertAlignment>
+            </Text20>
+          </Components>
+          <Conditions isList="true" count="0" />
+          <DataSourceName>Tags</DataSourceName>
+          <Filters isList="true" count="0" />
+          <MasterComponent isRef="14" />
+          <Name>Data3</Name>
+          <Page isRef="8" />
+          <Parent isRef="8" />
+          <Sort isList="true" count="0" />
+        </Data3>
+      </Components>
+      <Conditions isList="true" count="0" />
+      <Guid>07f01f59d5f64faeab2194d128d0ac56</Guid>
+      <Margins>1,1,1,1</Margins>
+      <Name>Page1</Name>
+      <Page isRef="8" />
+      <PageHeight>29.7</PageHeight>
+      <PageWidth>21</PageWidth>
+      <Report isRef="0" />
+      <Watermark Ref="24" type="Stimulsoft.Report.Components.StiWatermark" isKey="true">
+        <Font>Arial,100</Font>
+        <TextBrush>[50:0:0:0]</TextBrush>
+      </Watermark>
+    </Page1>
+  </Pages>
+  <PrinterSettings Ref="25" type="Stimulsoft.Report.Print.StiPrinterSettings" isKey="true" />
+  <ReferencedAssemblies isList="true" count="9">
+    <value>System.Dll</value>
+    <value>System.Drawing.Dll</value>
+    <value>System.Windows.Forms.Dll</value>
+    <value>System.Data.Dll</value>
+    <value>System.Xml.Dll</value>
+    <value>Stimulsoft.Controls.Dll</value>
+    <value>Stimulsoft.Base.Dll</value>
+    <value>Stimulsoft.Report.Dll</value>
+    <value>Sitecore.Analytics.dll</value>
+  </ReferencedAssemblies>
+  <ReportAlias>SearchSessionsReport</ReportAlias>
+  <ReportAuthor>Sitecore</ReportAuthor>
+  <ReportChanged>5/15/2009 10:06:40 AM</ReportChanged>
+  <ReportCreated>7/11/2008 10:00:10 AM</ReportCreated>
+  <ReportDescription>Sessions</ReportDescription>
+  <ReportGuid>6615ef0204f44e4c9e014193665dbe13</ReportGuid>
+  <ReportName>SearchSessionsReport</ReportName>
+  <ReportUnit>Centimeters</ReportUnit>
+  <ReportVersion>2009.1.400</ReportVersion>
+  <Script>using System;
+using System.Drawing;
+using System.Windows.Forms;
+using System.Data;
+using Stimulsoft.Controls;
+using Stimulsoft.Base.Drawing;
+using Stimulsoft.Report;
+using Stimulsoft.Report.Dialogs;
+using Stimulsoft.Report.Components;
+
+namespace Reports
+{
+    
+    public class SearchSessionsReport : Stimulsoft.Report.StiReport
+    {
+        
+        public SearchSessionsReport()
+        {
+            this.InitializeComponent();
+        }
+        #region StiReport Designer generated code - do not modify#endregion StiReport Designer generated code - do not modify
+    }
+}</Script>
+  <ScriptLanguage>CSharp</ScriptLanguage>
+  <Styles isList="true" count="7">
+    <Title Ref="26" type="Stimulsoft.Report.StiStyle" isKey="true">
+      <Border>Bottom;[23:54:95];1;Solid;False;4;Black</Border>
+      <Brush>Transparent</Brush>
+      <Font>Cambria,26.25,Regular,Point,False,0</Font>
+      <Name>Title</Name>
+      <TextBrush>[23:54:95]</TextBrush>
+    </Title>
+    <Subtitle Ref="27" type="Stimulsoft.Report.StiStyle" isKey="true">
+      <Brush>Transparent</Brush>
+      <Font>Cambria,12,Italic,Point,False,0</Font>
+      <Name>Subtitle</Name>
+      <TextBrush>[23:54:95]</TextBrush>
+    </Subtitle>
+    <ColumnHeader Ref="28" type="Stimulsoft.Report.StiStyle" isKey="true">
+      <Border>Top, Bottom;[54:95:145];1;Solid;False;4;Black</Border>
+      <Brush>Transparent</Brush>
+      <Font>Calibri,11,Bold,Point,False,0</Font>
+      <Name>ColumnHeader</Name>
+      <TextBrush>[54:95:145]</TextBrush>
+    </ColumnHeader>
+    <EvenRow Ref="29" type="Stimulsoft.Report.StiStyle" isKey="true">
+      <Brush>[211:223:238]</Brush>
+      <Font>Calibri,11,Bold,Point,False,0</Font>
+      <Name>EvenRow</Name>
+      <TextBrush>[54:95:145]</TextBrush>
+    </EvenRow>
+    <OddRow Ref="30" type="Stimulsoft.Report.StiStyle" isKey="true">
+      <Brush>Transparent</Brush>
+      <Font>Calibri,11,Bold,Point,False,0</Font>
+      <Name>OddRow</Name>
+      <TextBrush>[54:95:145]</TextBrush>
+    </OddRow>
+    <GroupHeader Ref="31" type="Stimulsoft.Report.StiStyle" isKey="true">
+      <Brush>Transparent</Brush>
+      <Font>Cambria,14.25,Bold,Point,False,0</Font>
+      <Name>GroupHeader</Name>
+      <TextBrush>[54:95:145]</TextBrush>
+    </GroupHeader>
+    <Detail Ref="32" type="Stimulsoft.Report.StiStyle" isKey="true">
+      <Brush>EmptyBrush</Brush>
+      <Font>Calibri,10,Regular,Point,False,0</Font>
+      <Name>Detail</Name>
+      <TextBrush>DimGray</TextBrush>
+    </Detail>
+  </Styles>
+</StiSerializer>

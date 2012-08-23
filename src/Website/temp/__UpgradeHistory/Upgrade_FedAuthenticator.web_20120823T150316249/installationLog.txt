@@ -1,0 +1,8 @@
+Analyzing package: C:\Projects\WIFAuthentication\src\Website\sitecore\admin\packages\FedAuthenticator.web.update
+Analyzing installation of the file '_DEV\DeployedItems.xml'
+Analyzing installation of the file 'App_Config\Include\FedAuthenticator.config'
+Analyzing installation of the file 'bin\FedAuthenticator.dll'
+Analyzing installation of the file 'bin\FedAuthenticator.pdb'
+Analyzing installation of the file 'bin\HedgehogDevelopment.SitecoreProject.PackageInstallPostProcessor.dll'
+Analyzing installation of the file 'sitecore modules\shell\FedAuthenticator\sso.aspx'
+Analysis has been completed

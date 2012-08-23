@@ -1,0 +1,4 @@
+.\Debug\App_Config\Include\FedAuthenticator.config
+.\Debug\sitecore modules\shell\FedAuthenticator\sso.aspx
+.\Debug\bin\FedAuthenticator.dll
+.\Debug\bin\FedAuthenticator.pdb

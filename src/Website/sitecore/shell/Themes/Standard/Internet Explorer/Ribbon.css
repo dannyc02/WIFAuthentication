@@ -1,0 +1,241 @@
+﻿.scRibbon, .scRibbonNavigator {
+  height: 1px;
+}
+
+.scRibbon a:hover {
+  text-decoration: underline;
+}
+
+.scRibbonNavigatorButtonsGroupHeader,
+.scRibbonNavigatorButtonsContextualGroupHeader {
+  height: 19px;
+}
+
+.scRibbon a.scRibbonNavigatorButtonsNormal,
+.scRibbon a.scRibbonNavigatorButtonsActive {
+  display: inline;
+  float: none;
+  height: 17px;
+  padding: 1px 12px;
+}
+
+.scRibbon a.scRibbonNavigatorButtonsActive,
+.scRibbon a.scRibbonNavigatorButtonsContextualNormal
+.scRibbon a.scRibbonNavigatorButtonsContextualActive {
+  height: 17px;
+}
+
+.scRibbon a.scRibbonNavigatorButtonsActive,
+.scRibbon a.scRibbonNavigatorButtonsContextualActive {
+  padding: 0 11px;
+}
+
+.scRibbon .chunk {
+  display: inline;
+  height: 62px;
+  float: none;  
+}
+
+.scRibbon .chunk .panel {
+  float: left;
+}
+
+.scRibbon .chunk .caption {
+  display: inline;
+}
+
+.scRibbon .chunk .caption .glyph {
+  vertical-align: inherit;
+}
+
+a.scRibbonToolbarLargeButton,
+.scRibbon a.scRibbonToolbarLargeButtonDown,
+.scRibbonToolbarLargeButtonDisabled,
+.scRibbon a.scRibbonToolbarLargeGalleryButton,
+.scRibbonToolbarLargeGalleryButtonDisabled,
+.scRibbonToolbarLargeComboButton,
+.scRibbonToolbarLargeComboButtonDown,
+.scRibbon a.scRibbonToolbarLargeTextButtonDown,
+.scRibbonToolbarLargeTextButtonDisabled,
+.scRibbon a.scRibbonToolbarLargeIconButtonDown,
+.scRibbonToolbarLargeIconButtonDisabled,
+.scRibbon a.scRibbonToolbarSmallComboButtonLeft,
+.scRibbon a.scRibbonToolbarSmallComboButtonRight {
+  display: inline-block;
+}
+
+.scRibbon a.scRibbonToolbarLargeTextButton {
+  width: 1px;
+}
+
+a.scRibbonToolbarSmallButton {
+  padding: 2px 6px 4px 6px;
+  position: static;
+}
+
+a:hover .scRibbonToolbarSmallButtonPrefix {
+  right: 0px;
+}
+
+a.scRibbonToolbarSmallButton:active,
+a.scRibbonToolbarSmallButton:hover,
+a.scRibbonToolbarSmallButtonDown {
+  padding: 1px 5px 3px 5px;
+}
+
+a span.header { /* Fix layouting of Japanese characters. */
+  height:0px;
+}
+
+.scRibbonToolbarSmallButtonLabel /* FF: -nothing- */ {
+	width: 165px;
+	text-overflow: ellipsis;
+	overflow: hidden;
+}
+
+.scRibbonToolbarSmallButtonIcon {
+  margin: 0px 4px 0px 0px;
+  vertical-align: middle;
+}
+
+.scRibbonToolbarSmallButtonDisabled {
+  padding: 2px 6px 4px 6px;
+}
+
+.scRibbonToolbarSmallButtonIconDisabled {
+  margin: 0px 4px 0px 0px; 
+  vertical-align: middle;
+}
+
+.scRibbon a.scRibbonToolbarSmallGalleryButton {
+  padding: 2px 6px 4px 6px;
+}
+
+.scRibbon a.scRibbonToolbarSmallGalleryButton:active,
+.scRibbon a.scRibbonToolbarSmallGalleryButton:hover {
+  padding:1px 5px 3px 5px;
+}
+
+.scRibbonToolbarSmallGalleryButtonDisabled {
+  padding: 2px 6px 4px 6px;
+}
+
+.scRibbonToolbarText {
+  display: inline-block;
+  height: 40px;
+}
+
+.scRibbonToolbarScrollbox {
+  display: inline-block;
+  overflow-y:auto;
+  overflow-x:auto;
+  scrollbar-base-color: #ebeced;
+  scrollbar-arrow-color: #586585;
+  scrollbar-3dlight-color: #798195;
+  scrollbar-darkshadow-color: #798195;
+  scrollbar-face-color: #dadcdf;
+  scrollbar-highlight-color: #dadcdf;
+  scrollbar-shadow-color: #dadcdf;
+  scrollbar-track-color: #b2b9cb;
+}
+
+.scRibbonToolbarSmallComboButton {
+  height: auto;
+  margin-top: auto;
+}
+
+.scRibbonToolbarSmallComboButtonLeftDisabled {
+  display: inline-block;
+  padding: 2px 2px 4px 6px;
+}
+
+.scRibbon a.scRibbonToolbarSmallComboButtonRight:active,
+.scRibbon a.scRibbonToolbarSmallComboButtonRight:hover {
+}
+
+.scRibbonToolbarSmallComboButtonIcon,
+.scRibbonToolbarSmallComboButtonIconDisabled {
+  margin: 0px 4px 0px 0px;
+  vertical-align: middle;
+}
+
+.scRibbonToolbarSmallComboButtonGlyph {
+  vertical-align: middle;
+  margin: 6px 0px 0px 0px;
+}
+
+.scRibbonToolbarSeperatorLine {
+  display: inline;
+}
+
+.scRibbonTranslatePanel table td {
+  padding-top: 2px;
+  padding-bottom: 1px;
+}
+
+/* Japanese language support */
+.lang_ja_jp a.scRibbonToolbarLargeButton,
+.lang_ja_jp a.scRibbonToolbarLargeComboButtonBottom {
+  padding-bottom: 1px;
+}
+
+.lang_ja_jp a.scRibbonToolbarLargeButton:active,
+.lang_ja_jp a.scRibbonToolbarLargeButton:hover,
+.lang_ja_jp a.scRibbonToolbarLargeButtonHover,
+.lang_ja_jp a.scRibbonToolbarLargeButtonDown,
+.lang_ja_jp a.scRibbonToolbarLargeComboButtonBottom:active,
+.lang_ja_jp a.scRibbonToolbarLargeComboButtonBottom:hover,
+.lang_ja_jp a.scRibbonToolbarLargeComboButtonBottomDown,
+.lang_ja_jp a.scRibbonToolbarLargeComboButtonBottomHover {
+  padding-bottom: 0px;
+}
+
+.lang_ja_jp a.scRibbonToolbarSmallButton {
+  padding-bottom: 3px;
+}
+
+.lang_ja_jp a.scRibbonToolbarSmallButton:active,
+.lang_ja_jp a.scRibbonToolbarSmallButton:hover,
+.lang_ja_jp a.scRibbonToolbarSmallButtonDown {
+  padding-bottom: 2px;
+}
+
+.lang_ja_jp .scRibbon .chunk *.panel {
+  height:49px;
+}
+
+.lang_ja_jp .scRibbon .chunk .panel .scRibbonGalleryList {
+  height:48px;
+}
+
+.lang_ja_jp .scRibbon .chunk .scRibbonGallery {
+  background:#dae2e2;
+  height:48px;
+}
+
+.lang_ja_jp .scRibbon .scRibbonPanelButtons .scRibbonPanelUp {
+  margin-top:1px;
+}
+.lang_ja_jp .scRibbon .scRibbonPanelButtons .scRibbonPanelDown,
+.lang_ja_jp .scRibbon .scRibbonPanelButtons .scRibbonPanelOpen {
+  margin-top:2px;
+  margin-bottom:1px;
+}
+
+.lang_ja_jp .scRibbon .chunk {
+  background: #818383 url(/sitecore/shell/themes/standard/images/ja/RibbonToolbarChunk.png) repeat-x;
+}
+
+.lang_ja_jp .scRibbon .chunk:hover,
+.lang_ja_jp .scRibbon .chunkHover {
+  background: #626363 url(/sitecore/shell/themes/standard/images/ja/RibbonToolbarChunkHover.png) repeat-x;
+}
+
+.lang_ja_jp .scRibbon .contextualChunk {
+  background: #9f9f9f url(/sitecore/shell/themes/standard/images/ja/RibbonToolbarContextualChunk.png) repeat-x;
+}
+
+.lang_ja_jp .scRibbon .chunk .caption {
+  height:19px;
+  line-height:15px;
+}

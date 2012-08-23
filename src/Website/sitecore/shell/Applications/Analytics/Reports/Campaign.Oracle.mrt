@@ -1,0 +1,549 @@
+﻿<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<StiSerializer version="1.0" application="StiReport">
+  <Dictionary Ref="1" type="Dictionary" isKey="true">
+    <DataSources isList="true" count="4">
+      <DataSource Ref="3" type="Stimulsoft.Report.Dictionary.StiOracleSourceExt" isKey="true">
+        <Alias>DataSource</Alias>
+        <Columns isList="true" count="8">
+          <value>CampaignId,System.Guid</value>
+          <value>Type,System.String</value>
+          <value>Title,System.String</value>
+          <value>Description,System.String</value>
+          <value>Cost,System.Double</value>
+          <value>StartDate,System.DateTime</value>
+          <value>EndData,System.DateTime</value>
+          <value>Data,System.String</value>
+        </Columns>
+        <CommandTimeout>0</CommandTimeout>
+        <Dictionary isRef="1" />
+        <Name>DataSource</Name>
+        <NameInSource>DataConnection</NameInSource>
+        <Parameters isList="true" count="0" />
+        <SqlCommand>
+select
+  "CampaignId",
+	"Type",
+	TO_CHAR("Title") as "Title",
+	"Description",
+	"Cost",
+	"StartDate",
+	"EndDate",
+	"Data",
+	"IsActive"
+from
+	"Campaign"
+where
+  rownum &lt;= 100
+order by
+	TO_CHAR("Title")
+</SqlCommand>
+      </DataSource>
+      <Goals Ref="4" type="Stimulsoft.Report.Dictionary.StiOracleSourceExt" isKey="true">
+        <Alias>Goals</Alias>
+        <Columns isList="true" count="4">
+          <value>CampaignId,System.Guid</value>
+          <value>Name,System.String</value>
+          <value>Description,System.String</value>
+          <value>Total,System.Int32</value>
+        </Columns>
+        <CommandTimeout>0</CommandTimeout>
+        <Dictionary isRef="1" />
+        <Name>Goals</Name>
+        <NameInSource>DataConnection</NameInSource>
+        <Parameters isList="true" count="0" />
+        <SqlCommand>
+select 
+	"CampaignEvent"."CampaignId",
+	TO_CHAR("PageEventDefinition"."Name") as "Name",
+	TO_CHAR("PageEventDefinition"."Description") as "Description",
+	count(*) as "Total"
+from
+	"CampaignEvent",
+	"CampaignEventPage",
+	"Page",
+	"Session",
+	"Page" "Page2",
+	"PageEvent",
+	"PageEventDefinition"
+where
+	"CampaignEvent"."CampaignEventId" = "CampaignEventPage"."CampaignEventId" and
+	"Page"."PageId" = "CampaignEventPage"."PageId" and
+	"Session"."SessionId" = "Page"."SessionId" and
+  "Page"."PageNo" = 1 and
+	"Page2"."SessionId" = "Session"."SessionId" and
+	"PageEvent"."PageId" = "Page2"."PageId" and
+	"PageEventDefinition"."PageEventDefinitionId" = "PageEvent"."PageEventDefinitionId" and
+	"PageEventDefinition"."IsGoal" = 1
+group by
+	"CampaignEvent"."CampaignId",
+	TO_CHAR("PageEventDefinition"."Name"),
+	TO_CHAR("PageEventDefinition"."Description")
+</SqlCommand>
+      </Goals>
+      <Profiles Ref="5" type="Stimulsoft.Report.Dictionary.StiOracleSourceExt" isKey="true">
+        <Alias>Profiles</Alias>
+        <Columns isList="true" count="3">
+          <value>CampaignId,System.Guid</value>
+          <value>Name,System.String</value>
+          <value>Total,System.Int32</value>
+        </Columns>
+        <CommandTimeout>0</CommandTimeout>
+        <Dictionary isRef="1" />
+        <Name>Profiles</Name>
+        <NameInSource>DataConnection</NameInSource>
+        <Parameters isList="true" count="0" />
+        <SqlCommand>
+select 
+	"CampaignEvent"."CampaignId",
+	TO_CHAR("ProfileDefinition"."Name") as "Name",
+	sum("Profile"."Total") as "Total"
+from
+	"CampaignEvent",
+	"CampaignEventPage",
+	"Page",
+	"Profile",
+	"ProfileDefinition"
+where
+	"CampaignEvent"."CampaignEventId" = "CampaignEventPage"."CampaignEventId" and
+	"Page"."PageId" = "CampaignEventPage"."PageId" and
+	"Profile"."SessionId" = "Page"."SessionId" and
+	"ProfileDefinition"."ProfileDefinitionId" = "Profile"."ProfileDefinitionId" and
+	TO_CHAR("ProfileDefinition"."ProfileType") = 'Sum'
+group by
+	"CampaignEvent"."CampaignId",
+	TO_CHAR("ProfileDefinition"."Name")
+</SqlCommand>
+      </Profiles>
+      <Sessions Ref="6" type="Stimulsoft.Report.Dictionary.StiOracleSourceExt" isKey="true">
+        <Alias>Sessions</Alias>
+        <Columns isList="true" count="2">
+          <value>CampaignId,System.Guid</value>
+          <value>SessionCount,System.Int32</value>
+        </Columns>
+        <CommandTimeout>0</CommandTimeout>
+        <Dictionary isRef="1" />
+        <Name>Sessions</Name>
+        <NameInSource>DataConnection</NameInSource>
+        <Parameters isList="true" count="0" />
+        <SqlCommand>
+select 
+	"CampaignEvent"."CampaignId",
+	count(*) as "SessionCount"
+from
+	"CampaignEvent",
+	"CampaignEventPage",
+	"Page",
+	"Session"
+where
+	"CampaignEvent"."CampaignEventId" = "CampaignEventPage"."CampaignEventId" and
+	"Page"."PageId" = "CampaignEventPage"."PageId" and
+	"Session"."SessionId" = "Page"."SessionId"
+group by
+	"CampaignEvent"."CampaignId"
+</SqlCommand>
+      </Sessions>
+    </DataSources>
+    <Relations isList="true" count="3">
+      <DataSourceGoals Ref="7" type="DataRelation" isKey="true">
+        <Alias>DataSourceGoals</Alias>
+        <ChildColumns isList="true" count="1">
+          <value>CampaignId</value>
+        </ChildColumns>
+        <ChildSource isRef="3" />
+        <Dictionary isRef="1" />
+        <Name>DataSourceGoals</Name>
+        <NameInSource>Relation</NameInSource>
+        <ParentColumns isList="true" count="1">
+          <value>CampaignId</value>
+        </ParentColumns>
+        <ParentSource isRef="4" />
+      </DataSourceGoals>
+      <DataSourceProfiles Ref="8" type="DataRelation" isKey="true">
+        <Alias>DataSourceProfiles</Alias>
+        <ChildColumns isList="true" count="1">
+          <value>CampaignId</value>
+        </ChildColumns>
+        <ChildSource isRef="3" />
+        <Dictionary isRef="1" />
+        <Name>DataSourceProfiles</Name>
+        <NameInSource>Relation</NameInSource>
+        <ParentColumns isList="true" count="1">
+          <value>CampaignId</value>
+        </ParentColumns>
+        <ParentSource isRef="5" />
+      </DataSourceProfiles>
+      <Name Ref="9" type="DataRelation" isKey="true">
+        <Alias>Name</Alias>
+        <ChildColumns isList="true" count="1">
+          <value>CampaignId</value>
+        </ChildColumns>
+        <ChildSource isRef="3" />
+        <Dictionary isRef="1" />
+        <Name>Name</Name>
+        <NameInSource>Relation</NameInSource>
+        <ParentColumns isList="true" count="1">
+          <value>CampaignId</value>
+        </ParentColumns>
+        <ParentSource isRef="6" />
+      </Name>
+    </Relations>
+    <Report isRef="0" />
+    <Variables isList="true" count="3">
+      <value>,ReportTitle,ReportTitle,System.String,Campaigns,False,False</value>
+      <value>,StartDate,StartDate,System.DateTime,DateTime.Now.AddDays_x0028_-7_x0029_,False,True</value>
+      <value>,EndDate,EndDate,System.DateTime,DateTime.Now,False,True</value>
+    </Variables>
+  </Dictionary>
+  <EngineVersion>EngineV1</EngineVersion>
+  <GlobalizationStrings isList="true" count="0" />
+  <Pages isList="true" count="1">
+    <Page1 Ref="10" type="Page" isKey="true">
+      <Border>Bottom;[23:54:95];1;Solid;False;4;Black</Border>
+      <Brush>Transparent</Brush>
+      <Components isList="true" count="9">
+        <PageHeader Ref="11" type="PageHeaderBand" isKey="true">
+          <Border>Bottom;[23:54:95];1;Solid;False;4;Black</Border>
+          <Brush>Transparent</Brush>
+          <ClientRectangle>0,0.4,19,1.8</ClientRectangle>
+          <Components isList="true" count="1">
+            <Text5 Ref="12" type="Text" isKey="true">
+              <AutoWidth>True</AutoWidth>
+              <Brush>Transparent</Brush>
+              <CanGrow>True</CanGrow>
+              <ClientRectangle>0,1,19,0.6</ClientRectangle>
+              <ComponentStyle>Subtitle</ComponentStyle>
+              <Conditions isList="true" count="0" />
+              <Font>Cambria,12,Italic</Font>
+              <Margins>0,0,0,0</Margins>
+              <Name>Text5</Name>
+              <OnlyText>True</OnlyText>
+              <Page isRef="10" />
+              <Parent isRef="11" />
+              <Text>Shows goals and profiles for each campaign.</Text>
+              <TextBrush>[23:54:95]</TextBrush>
+              <Type>Expression</Type>
+              <VertAlignment>Center</VertAlignment>
+            </Text5>
+          </Components>
+          <ComponentStyle>Title</ComponentStyle>
+          <Conditions isList="true" count="0" />
+          <Name>PageHeader</Name>
+          <Page isRef="10" />
+          <Parent isRef="10" />
+        </PageHeader>
+        <Text2 Ref="13" type="Text" isKey="true">
+          <AutoWidth>True</AutoWidth>
+          <Border>Bottom;[23:54:95];1;Solid;False;4;Black</Border>
+          <Brush>Transparent</Brush>
+          <CanGrow>True</CanGrow>
+          <ClientRectangle>23.4,1,19,0.8</ClientRectangle>
+          <ComponentStyle>Title</ComponentStyle>
+          <Conditions isList="true" count="0" />
+          <Font>Cambria,26.25</Font>
+          <Margins>0,0,0,0</Margins>
+          <Name>Text2</Name>
+          <Page isRef="10" />
+          <Parent isRef="10" />
+          <Text>{ReportTitle}</Text>
+          <TextBrush>[23:54:95]</TextBrush>
+          <Type>Expression</Type>
+          <VertAlignment>Center</VertAlignment>
+        </Text2>
+        <GroupHeader1 Ref="14" type="GroupHeaderBand" isKey="true">
+          <Brush>Transparent</Brush>
+          <ClientRectangle>0,3,19,1.2</ClientRectangle>
+          <Components isList="true" count="1">
+            <Text4 Ref="15" type="Text" isKey="true">
+              <Brush>Transparent</Brush>
+              <ClientRectangle>0,0.4,19,0.8</ClientRectangle>
+              <ComponentStyle>GroupHeader</ComponentStyle>
+              <Conditions isList="true" count="0" />
+              <Font>Cambria,14.25,Bold</Font>
+              <Margins>0,0,0,0</Margins>
+              <Name>Text4</Name>
+              <Page isRef="10" />
+              <Parent isRef="14" />
+              <Text>{DataSource.Title}</Text>
+              <TextBrush>[54:95:145]</TextBrush>
+              <VertAlignment>Center</VertAlignment>
+            </Text4>
+          </Components>
+          <Condition>{DataSource.Title}</Condition>
+          <Conditions isList="true" count="0" />
+          <Name>GroupHeader1</Name>
+          <Page isRef="10" />
+          <Parent isRef="10" />
+        </GroupHeader1>
+        <GroupHeader4 Ref="16" type="GroupHeaderBand" isKey="true">
+          <Brush>Transparent</Brush>
+          <ClientRectangle>0,5,19,0.8</ClientRectangle>
+          <Components isList="true" count="1">
+            <Text10 Ref="17" type="Text" isKey="true">
+              <Brush>Transparent</Brush>
+              <ClientRectangle>0,0.2,19,0.6</ClientRectangle>
+              <Conditions isList="true" count="0" />
+              <Font>Cambria,12,Bold| Italic| Underline</Font>
+              <Margins>0,0,0,0</Margins>
+              <Name>Text10</Name>
+              <Page isRef="10" />
+              <Parent isRef="16" />
+              <Text>Sessions</Text>
+              <TextBrush>[54:95:145]</TextBrush>
+              <VertAlignment>Center</VertAlignment>
+            </Text10>
+          </Components>
+          <Condition>{DataSource.Title}</Condition>
+          <Conditions isList="true" count="0" />
+          <Name>GroupHeader4</Name>
+          <Page isRef="10" />
+          <Parent isRef="10" />
+        </GroupHeader4>
+        <Data3 Ref="18" type="DataBand" isKey="true">
+          <Brush>Transparent</Brush>
+          <ClientRectangle>0,6.6,19,0.8</ClientRectangle>
+          <Components isList="true" count="1">
+            <Text11 Ref="19" type="Text" isKey="true">
+              <Brush>Transparent</Brush>
+              <ClientRectangle>0,0.2,19,0.6</ClientRectangle>
+              <Conditions isList="true" count="0" />
+              <Font>Calibri,11,Bold</Font>
+              <Margins>0,0,0,0</Margins>
+              <Name>Text11</Name>
+              <Page isRef="10" />
+              <Parent isRef="18" />
+              <Text>{Sessions.SessionCount}</Text>
+              <TextBrush>[54:95:145]</TextBrush>
+              <VertAlignment>Center</VertAlignment>
+            </Text11>
+          </Components>
+          <Conditions isList="true" count="0" />
+          <DataSourceName>Sessions</DataSourceName>
+          <Filters isList="true" count="0" />
+          <Name>Data3</Name>
+          <Page isRef="10" />
+          <Parent isRef="10" />
+          <Sort isList="true" count="0" />
+        </Data3>
+        <GroupHeader2 Ref="20" type="GroupHeaderBand" isKey="true">
+          <Brush>Transparent</Brush>
+          <ClientRectangle>0,8.2,19,0.8</ClientRectangle>
+          <Components isList="true" count="1">
+            <Text8 Ref="21" type="Text" isKey="true">
+              <Brush>Transparent</Brush>
+              <ClientRectangle>0,0.2,19,0.6</ClientRectangle>
+              <Conditions isList="true" count="0" />
+              <Font>Cambria,12,Bold| Italic| Underline</Font>
+              <Margins>0,0,0,0</Margins>
+              <Name>Text8</Name>
+              <Page isRef="10" />
+              <Parent isRef="20" />
+              <Text>Goals</Text>
+              <TextBrush>[54:95:145]</TextBrush>
+              <VertAlignment>Center</VertAlignment>
+            </Text8>
+          </Components>
+          <Condition>{DataSource.Title}</Condition>
+          <Conditions isList="true" count="0" />
+          <Name>GroupHeader2</Name>
+          <Page isRef="10" />
+          <Parent isRef="10" />
+        </GroupHeader2>
+        <Data1 Ref="22" type="DataBand" isKey="true">
+          <Brush>Transparent</Brush>
+          <ClientRectangle>0,9.8,19,0.6</ClientRectangle>
+          <Components isList="true" count="3">
+            <Text6 Ref="23" type="Text" isKey="true">
+              <Brush>Transparent</Brush>
+              <ClientRectangle>0,0,7.8,0.6</ClientRectangle>
+              <Conditions isList="true" count="0" />
+              <Font>Calibri,11,Bold</Font>
+              <Margins>0,0,0,0</Margins>
+              <Name>Text6</Name>
+              <Page isRef="10" />
+              <Parent isRef="22" />
+              <Text>{Goals.Name}</Text>
+              <TextBrush>[54:95:145]</TextBrush>
+              <VertAlignment>Center</VertAlignment>
+            </Text6>
+            <Text7 Ref="24" type="Text" isKey="true">
+              <Brush>Transparent</Brush>
+              <ClientRectangle>7.8,0,3.4,0.6</ClientRectangle>
+              <Conditions isList="true" count="0" />
+              <Font>Calibri,11,Bold</Font>
+              <HorAlignment>Right</HorAlignment>
+              <Margins>0,0,0,0</Margins>
+              <Name>Text7</Name>
+              <Page isRef="10" />
+              <Parent isRef="22" />
+              <Text>{Goals.Total}</Text>
+              <TextBrush>[54:95:145]</TextBrush>
+              <VertAlignment>Center</VertAlignment>
+            </Text7>
+            <Text12 Ref="25" type="Text" isKey="true">
+              <Brush>Transparent</Brush>
+              <ClientRectangle>11.2,0,3.4,0.6</ClientRectangle>
+              <Conditions isList="true" count="0" />
+              <Font>Calibri,11,Bold</Font>
+              <HorAlignment>Right</HorAlignment>
+              <Margins>0,0,0,0</Margins>
+              <Name>Text12</Name>
+              <Page isRef="10" />
+              <Parent isRef="22" />
+              <Text>{((double)Goals.Total / Sessions.SessionCount * 100).ToString("#0.0")}%</Text>
+              <TextBrush>[54:95:145]</TextBrush>
+              <VertAlignment>Center</VertAlignment>
+            </Text12>
+          </Components>
+          <Conditions isList="true" count="0" />
+          <DataSourceName>Goals</DataSourceName>
+          <EvenStyle>EvenRow</EvenStyle>
+          <Filters isList="true" count="0" />
+          <Name>Data1</Name>
+          <OddStyle>OddRow</OddStyle>
+          <Page isRef="10" />
+          <Parent isRef="10" />
+          <Sort isList="true" count="0" />
+        </Data1>
+        <GroupHeader3 Ref="26" type="GroupHeaderBand" isKey="true">
+          <Brush>Transparent</Brush>
+          <ClientRectangle>0,11.2,19,1</ClientRectangle>
+          <Components isList="true" count="1">
+            <Text9 Ref="27" type="Text" isKey="true">
+              <Brush>Transparent</Brush>
+              <ClientRectangle>0,0.4,19,0.6</ClientRectangle>
+              <Conditions isList="true" count="0" />
+              <Font>Cambria,12,Bold| Italic| Underline</Font>
+              <Margins>0,0,0,0</Margins>
+              <Name>Text9</Name>
+              <Page isRef="10" />
+              <Parent isRef="26" />
+              <Text>Profiles</Text>
+              <TextBrush>[54:95:145]</TextBrush>
+              <VertAlignment>Center</VertAlignment>
+            </Text9>
+          </Components>
+          <Condition>{DataSource.Title}</Condition>
+          <Conditions isList="true" count="0" />
+          <Name>GroupHeader3</Name>
+          <Page isRef="10" />
+          <Parent isRef="10" />
+        </GroupHeader3>
+        <Data2 Ref="28" type="DataBand" isKey="true">
+          <Brush>Transparent</Brush>
+          <ClientRectangle>0,13,19,0.6</ClientRectangle>
+          <Components isList="true" count="3">
+            <Text1 Ref="29" type="Text" isKey="true">
+              <Brush>Transparent</Brush>
+              <ClientRectangle>0,0,7.8,0.6</ClientRectangle>
+              <Conditions isList="true" count="0" />
+              <Font>Calibri,11,Bold</Font>
+              <Margins>0,0,0,0</Margins>
+              <Name>Text1</Name>
+              <Page isRef="10" />
+              <Parent isRef="28" />
+              <Text>{Profiles.Name}</Text>
+              <TextBrush>[54:95:145]</TextBrush>
+              <VertAlignment>Center</VertAlignment>
+            </Text1>
+            <Text3 Ref="30" type="Text" isKey="true">
+              <Brush>Transparent</Brush>
+              <ClientRectangle>7.8,0,3.4,0.6</ClientRectangle>
+              <Conditions isList="true" count="0" />
+              <Font>Calibri,11,Bold</Font>
+              <HorAlignment>Right</HorAlignment>
+              <Margins>0,0,0,0</Margins>
+              <Name>Text3</Name>
+              <Page isRef="10" />
+              <Parent isRef="28" />
+              <Text>{Profiles.Total.ToString("#,##0")}</Text>
+              <TextBrush>[54:95:145]</TextBrush>
+              <VertAlignment>Center</VertAlignment>
+            </Text3>
+            <Text13 Ref="31" type="Text" isKey="true">
+              <Brush>Transparent</Brush>
+              <ClientRectangle>11.2,0,3.4,0.6</ClientRectangle>
+              <Conditions isList="true" count="0" />
+              <Font>Calibri,11,Bold</Font>
+              <HorAlignment>Right</HorAlignment>
+              <Margins>0,0,0,0</Margins>
+              <Name>Text13</Name>
+              <Page isRef="10" />
+              <Parent isRef="28" />
+              <Text>{((double)Profiles.Total / Sessions.SessionCount).ToString("#,##0.0")}</Text>
+              <TextBrush>[54:95:145]</TextBrush>
+              <VertAlignment>Center</VertAlignment>
+            </Text13>
+          </Components>
+          <Conditions isList="true" count="0" />
+          <DataSourceName>Profiles</DataSourceName>
+          <Filters isList="true" count="0" />
+          <Name>Data2</Name>
+          <Page isRef="10" />
+          <Parent isRef="10" />
+          <Sort isList="true" count="0" />
+        </Data2>
+      </Components>
+      <ComponentStyle>Title</ComponentStyle>
+      <Conditions isList="true" count="0" />
+      <Guid>bea0a4ff424b4b4ab5f5dc31526bc080</Guid>
+      <Margins>1,1,1,1</Margins>
+      <Name>Page1</Name>
+      <Page isRef="10" />
+      <PageHeight>29.7</PageHeight>
+      <PageWidth>21</PageWidth>
+      <Report isRef="0" />
+      <Watermark Ref="32" type="Stimulsoft.Report.Components.StiWatermark" isKey="true">
+        <Font>Arial,100</Font>
+        <TextBrush>[50:0:0:0]</TextBrush>
+      </Watermark>
+    </Page1>
+  </Pages>
+  <PrinterSettings Ref="33" type="Stimulsoft.Report.Print.StiPrinterSettings" isKey="true" />
+  <ReferencedAssemblies isList="true" count="10">
+    <value>System.Dll</value>
+    <value>System.Drawing.Dll</value>
+    <value>System.Windows.Forms.Dll</value>
+    <value>System.Data.Dll</value>
+    <value>System.Xml.Dll</value>
+    <value>Stimulsoft.Controls.Dll</value>
+    <value>Stimulsoft.Base.Dll</value>
+    <value>Stimulsoft.Report.Dll</value>
+    <value>Sitecore.Analytics.dll</value>
+    <value>Sitecore.Oracle.dll</value>
+  </ReferencedAssemblies>
+  <ReportAlias>CampaignReport</ReportAlias>
+  <ReportAuthor>Sitecore</ReportAuthor>
+  <ReportChanged>5/15/2009 9:57:34 AM</ReportChanged>
+  <ReportCreated>12/9/2008 11:04:31 AM</ReportCreated>
+  <ReportDescription>Campaign</ReportDescription>
+  <ReportGuid>247c5b18bae44872b5e56f752a3f566a</ReportGuid>
+  <ReportName>CampaignReport</ReportName>
+  <ReportUnit>Centimeters</ReportUnit>
+  <ReportVersion>2009.1.400</ReportVersion>
+  <Script>using System;
+using System.Drawing;
+using System.Windows.Forms;
+using System.Data;
+using Stimulsoft.Controls;
+using Stimulsoft.Base.Drawing;
+using Stimulsoft.Report;
+using Stimulsoft.Report.Dialogs;
+using Stimulsoft.Report.Components;
+
+namespace Reports
+{
+    
+    public class Report : Stimulsoft.Report.StiReport
+    {
+        
+        public Report()
+        {
+            this.InitializeComponent();
+        }
+        #region StiReport Designer generated code - do not modify#endregion StiReport Designer generated code - do not modify
+    }
+}
+</Script>
+  <ScriptLanguage>CSharp</ScriptLanguage>
+  <Styles isList="true" count="0" />
+</StiSerializer>
