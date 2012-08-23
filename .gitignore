@@ -1,0 +1,56 @@
+# GIT IGNORE FILE
+_ReSharper.*
+*.suo
+*.ReSharper.user
+[Oo]bj
+*.cache
+bin
+*.csproj.user
+build/prepare
+*.orig
+*Thumbs.db
+*.ncrunchproject
+
+#AppData
+App_Data/ClientDependency/*
+App_Data/Logs/*
+
+#global logs:
+Data/
+
+# FRONT-END
+/src/*.FrontEnd/css
+/src/*.FrontEnd/images
+/src/*.FrontEnd/js
+/src/*.FrontEnd/lib
+
+# SITECORE DATA
+/src/data/diagnostics/
+/src/data/indexes/
+/src/data/logs/
+/src/data/viewstate/
+/src/data/servicelogs/
+
+# SITECORE SITE
+/src/*.Site/upload/
+/src/*.Site/temp/
+
+# SITECORE SHELL
+/src/*.Site/sitecore/shell/Themes/
+/src/*.Site/sitecore/shell/RadControls/
+/src/*.Site/sitecore/shell/RadControls/Editor/Skins/Custom
+/src/*.Site/sitecore/shell/RadControls/Editor/Skins/Default2006
+/src/*.Site/sitecore/shell/RadControls/Editor/Skins/Inox
+/src/*.Site/sitecore/shell/RadControls/Editor/Skins/Mac
+/src/*.Site/sitecore/shell/RadControls/Editor/Skins/Monochrome
+/src/*.Site/sitecore/shell/RadControls/Editor/Skins/Office2000
+/src/*.Site/sitecore/shell/RadControls/Editor/Skins/Office2007
+/src/*.Site/sitecore/shell/RadControls/Editor/Skins/Outlook
+/src/*.Site/sitecore/shell/RadControls/Editor/Skins/Telerik
+/src/*.Site/sitecore/shell/RadControls/Editor/Skins/Vista
+/src/*.Site/sitecore/shell/RadControls/Editor/Skins/Web20
+/src/*.Site/sitecore/shell/RadControls/Editor/Skins/WebBlue
+
+# GRANTS SPECIFIC
+/*.ncrunchsolution
+/*.ncrunchsolution.user
