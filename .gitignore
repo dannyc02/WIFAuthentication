@@ -55,4 +55,6 @@ Data/
 /*.ncrunchsolution
 /*.ncrunchsolution.user
 
-/Databases/*
+/Databases/*.mdf
+
+/Databases/*.ldf
